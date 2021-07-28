@@ -1,0 +1,47 @@
+<template>
+    <div class="main-content">
+        <div>
+            <router-link :to="{ name: 'Agregar' }">
+                <button>
+                    Agregar
+                </button>
+            </router-link>
+        </div>
+        <div>
+            <router-link :to="{ name: 'Ver' }">
+                <button>
+                    Ver - consultar
+                </button>
+            </router-link>
+        </div>
+    </div>
+</template>
+
+<script>
+import { defineComponent } from "@vue/runtime-core";
+
+export default defineComponent({
+    name: 'Principal'
+})
+</script>
+
+<style scoped>
+    .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 100vh;
+    }
+    .main-content div {
+        margin: auto;
+        text-align: center;
+    }
+    button {
+        cursor: pointer;
+        padding: 50px;
+        margin: auto;
+        font-size: 20px;
+        border-radius: 5px;
+        background-color: dodgerblue;
+        box-shadow: 10px 10px #98969638
+    }
+</style>
