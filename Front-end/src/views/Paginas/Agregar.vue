@@ -6,10 +6,10 @@
                     <input v-model="primerNombre" type="text" required name="nombre" placeholder="Primer Nombre" />
                     <input v-model="prmierApellido" type="text" required name="apellido" placeholder="Primer Apellido" />
                 </div>
-                <div>                    
+                <!-- <div>                    
                     <input v-model="segundoNombre" type="text" name="2-nombre" placeholder="Segundo Nombre"/>
                     <input v-model="segundoApellido" type="text" name="2-apellido" placeholder="Segundo Apellido" />
-                </div>
+                </div> -->
                 <div>
                     <input v-model="cedula" type="text" required name="cedula" placeholder="Cédula">
                     <input v-model="telefono" type="number" required name="Teléfono" placeholder="4242196405">
@@ -59,8 +59,8 @@ export default defineComponent({
 
             primerNombre: '',
             prmierApellido: '',
-            segundoNombre: '',
-            segundoApellido: '',
+            // segundoNombre: '',
+            // segundoApellido: '',
 
             cedula: '',
             telefono: '',
