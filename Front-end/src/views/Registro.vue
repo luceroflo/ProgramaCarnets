@@ -9,7 +9,7 @@
                 </div>
 
                 <input
-                    v-model="registro.usuario"
+                    v-model="registro.adminReg.username"
                     type="text"
                     name="Usuario"                    
                     placeholder="Usuario"
@@ -17,8 +17,30 @@
                     required
                     autofocus
                 />
+                <div v-if="registro.usuarioError" class="error">{{registro.usuarioError}}</div>
+
                 <input
-                    v-model="registro.cedula"
+                    v-model="registro.adminReg.nombre"
+                    type="text"
+                    name="Nombre"                    
+                    placeholder="Nombre"
+                    class="form__input"
+                    required
+                    autofocus
+                />
+
+                <input
+                    v-model="registro.adminReg.apellido"
+                    type="text"
+                    name="Apellido"                    
+                    placeholder="Apellido"
+                    class="form__input"
+                    required
+                    autofocus
+                />
+
+                <input
+                    v-model="registro.adminReg.cedula"
                     type="text"
                     name="Cedula"                    
                     placeholder="Cedula"
@@ -27,7 +49,7 @@
                     autofocus
                 />
                 <input
-                    v-model="registro.email"
+                    v-model="registro.adminReg.correo"
                     type="email"
                     name="correo"
                     placeholder="Correo"
@@ -35,22 +57,22 @@
                     required
                 />
                 <input
-                    v-model="registro.telefono"
+                    v-model="registro.adminReg.telf_1"
                     type="number"
                     name="telefono"
                     placeholder="4142566555"
                     class="form__input"
                     required
                 />
-                <input
-                    v-model="registro.codigo"
+                <!-- <input
+                    v-model="registro.adminReg.codigo"
                     type="codigo"
                     name="codigo"
                     placeholder="Código"
                     class="form__input"                    
-                />
+                /> -->
                 <input
-                    v-model="registro.password"
+                    v-model="registro.adminReg.password"
                     type="password"
                     name="contraseña"
                     placeholder="Contraseña"
@@ -59,7 +81,7 @@
                 />
                 <div v-if="registro.passwordError" class="error">{{registro.passwordError}}</div>
                 <input
-                    v-model="registro.co_password"
+                    v-model="registro.adminReg.co_password"
                     type="password"
                     name="contraseña"
                     placeholder="Confirmar Contraseña"
@@ -86,56 +108,85 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent, ref } from "@vue/runtime-core";
+import { adminModel } from "../modelo/modeloAdmin"
+import insertAdmin from "../funciones/insertAdmin";
 
 export default defineComponent({
     name: 'Registro',
     setup() {
-              //Ref
+        //Ref
+        let adminReg : adminModel = {
+            username: 'usuario',
+            nombre: 'nombre',
+            apellido: 'apellido',
+            cedula: 5,
+            correo: 'raga@gmail.com',
+            telf_1: '04242186302',
+            telf_2: '04123858558',
+            //codigo: '',
+            password: '123456789',
+            co_password: '123456789',
+            // //VALIDACIONES
+            // usuarioError: '',
+            // passwordError: '',
+            // co_passwordError: ''
+        }
         const registro = ref({ 
-            usuario: '',
-            cedula: '',
-            email: '',
-            telefono: '',
-            codigo: '',
-            password: '',
-            co_password: '',
-            //VALIDACIONES
+            adminReg,
+            usuarioError: '',
             passwordError: '',
             co_passwordError: ''
         })
         const updateOne = () => {
-            registro.value.usuario = 'updated one'
+            registro.value.adminReg.username = 'updated one'
             // registro.value.age = 120
         }
 
         const handleSubmit = () => {
           console.log('Ejecutando handle')
+            //VALIDACIÓN NÚMERO DE CARACTERES USUARIO
+            //MÁXIMO
+            registro.value.usuarioError = registro.value.adminReg.username.length > 4 ?
+            '' : 'El usuario debe contener como mínimo 5 caracteres'
+            //MÍNIMO
+            registro.value.usuarioError = registro.value.adminReg.username.length > 20 ?
+            'El usuario debe contener menos de 20 caracteres' : ''
 
-            //VALIDACIÓN DEL NÚMERO DE CARACTERES
-            registro.value.passwordError = registro.value.password.length > 7 ? 
+            //VALIDACIÓN DEL NÚMERO DE CARACTERES CLAVE
+            //MÍNIMO
+            registro.value.passwordError = registro.value.adminReg.password.length > 7 ? 
             '' : 'La contraseña debe tener como mínimo 8 caracteres'
+            //MÁXIMO
+            registro.value.passwordError = registro.value.adminReg.password.length > 20 ? 
+            'La contraseña debe ser menor de 20 caracteres' : ''
 
             //VALIDACIÓN DE CONINCIDENCIA DE CONTRAEÑAS
-            registro.value.co_passwordError = registro.value.password == registro.value.co_password ?
+            registro.value.co_passwordError = registro.value.adminReg.password == registro.value.adminReg.co_password ?
             '' : 'Las contraseñas deben coincidir'
 
-            console.log(registro.value.co_password)
+            console.log(registro.value.adminReg.co_password + '' + registro.value.usuarioError)
             //OTRAS VALIDACIONES
             //...
             //..
             //.            
 
             //PRINT DE LA DATA
-            if (!registro.value.passwordError) {
-                console.log('usuario', registro.value.usuario)
-                console.log('cedula', registro.value.cedula)
-                console.log('email', registro.value.email)
-                console.log('telefono', registro.value.telefono)
-                console.log('codigo', registro.value.codigo)
-                console.log('contraseña', registro.value.password)
-                console.log('co_contraseña', registro.value.co_password)
+            if (!registro.value.passwordError || !registro.value.usuarioError) {
+                console.log('usuario', registro.value.adminReg.username)
+                console.log('cedula', registro.value.adminReg.cedula)
+                console.log('email', registro.value.adminReg.correo)
+                console.log('telefono', registro.value.adminReg.telf_1)
+                //console.log('codigo', registro.value.adminReg.codigo)
+                console.log('contraseña', registro.value.adminReg.password)
+                console.log('co_contraseña', registro.value.adminReg.co_password)
             }
+
+            const { error, insert } = insertAdmin(adminReg)
+
+            insert()
+            
         }
 
         return {
