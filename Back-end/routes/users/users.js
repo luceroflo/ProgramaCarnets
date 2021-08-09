@@ -1,5 +1,5 @@
-const { getUserSchema, registrarUserSchema } = require('../user-schemas/schema');
-const { insertUser } = require('../../controllers/administrator/administrator');
+const { getUserSchema, registrarUserSchema } = require('../users-schema/schema');
+const { insertUser } = require('../../controllers/user/user');
 
 function transactionRoutes(fastify, options, done) {
     /**
