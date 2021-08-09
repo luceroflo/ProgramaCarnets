@@ -1,39 +1,39 @@
 <template>
     <div class="add-contenedor">
-        <form>
+        <form @submit.prevent="handleSubmit">
             <div class="top-front">
                 <div>
-                    <input v-model="primerNombre" type="text" required name="nombre" placeholder="Primer Nombre" />
-                    <input v-model="prmierApellido" type="text" required name="apellido" placeholder="Primer Apellido" />
+                    <input v-model="formUser.userReg.nombre" type="text" required name="nombre" placeholder="Primer Nombre" />
+                    <input v-model="formUser.userReg.apellido" type="text" required name="apellido" placeholder="Primer Apellido" />
                 </div>
                 <!-- <div>                    
                     <input v-model="segundoNombre" type="text" name="2-nombre" placeholder="Segundo Nombre"/>
                     <input v-model="segundoApellido" type="text" name="2-apellido" placeholder="Segundo Apellido" />
                 </div> -->
                 <div>
-                    <input v-model="cedula" type="text" required name="cedula" placeholder="Cédula">
-                    <input v-model="telefono" type="number" required name="Teléfono" placeholder="4242196405">
+                    <input v-model="formUser.userReg.cedula" type="text" required name="cedula" placeholder="Cédula">
+                    <input v-model="formUser.userReg.telefono" type="number" required name="Teléfono" placeholder="4242196405">
                 </div>
                 <div>
-                    <select v-model="role" @change="CambioRole">
+                    <select v-model="formUser.role" @change="CambioRole">
                         <option value="Estudiante">Estudiante</option>
                         <option value="Docente">Docente</option>
                         <option value="Personal">Personal</option>
-                    </select>     
-                    <input v-model="correo" type="text" placeholder="Correo@gmail.com">               
+                    </select>
+                    <input v-model="formUser.userReg.correo" type="text" placeholder="Correo@gmail.com">               
                 </div>
             </div>            
-            <div v-if="showCarrera">
-                <select v-model="carrera" name="" id="">
-                    <option value="Carreras">Carreras</option>
+            <div v-if="formUser.showCarrera">
+                <select v-model="formUser.userReg.career" name="" id="">
+                    <option v-for="carrera in formUser.carreras" v-bind:value="carrera" v-bind:key="carrera">{{ carrera }}</option>
                 </select>
             </div>
             <div v-else>
-                <input v-model="especializacion" type="text" placeholder="Especializacion" name="especializacion" />
+                <input v-model="formUser.userReg.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
             </div>
-            <div >
+            <!-- <div >
                 <textarea v-model="direccion" type="text" placeholder="Dirección" name="direccion" /> 
-            </div>
+            </div> -->
             <div>
                 <button>
                     Agregar Foto
@@ -48,65 +48,71 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "@vue/runtime-core";
+import { defineComponent, onUpdated, ref, watch } from "@vue/runtime-core";
+import { userModel } from "../../modelo/modeloUser"
 
 export default defineComponent({
     name: 'Agregar',
-    data() {
-        return {
-            
-            showCarrera: true,
+    setup() {
 
-            primerNombre: '',
-            prmierApellido: '',
-            // segundoNombre: '',
-            // segundoApellido: '',
+        let CambioRole = (() => {
+            console.log('updated Function role ' + formUser.value.role + formUser.value.showCarrera)
+            if (formUser.value.role == 'Estudiante') {
+                formUser.value.showCarrera = true
+            } else {
+                formUser.value.showCarrera = false
+            }
+        })
 
-            cedula: '',
+        let userReg : userModel = {
+            nombre: '',
+            apellido: '',
+            cedula: null,
             telefono: '',
             correo: '',
-            role: 'Estudiante' as any,
-
-            carrera: '',
-            especializacion: '',
-
-            direccion: '',
-
-            carreras: []
+            career: '',
+            especializacion: ''
         }
-    },
-    mounted() {
 
-    },
-    update() {
-        console.log('updated')
-        if (this.role == 'Estudiante') {
-            this.showCarrera = true
-        } else {
-            this.showCarrera = false
+        const formUser = ref({
+            userReg,
+            showCarrera: true,
+            role: 'Estudiante',
+            especializacion: '',        
+            carreras: [
+                'Administración de Empresas Agropecuarias',
+                'Administración en Informática',
+                'Administración en Mercadeo',
+                'Administración en Organización y Sistemas',
+                'Administración en Recursos Humanos',
+                'Administración en Recursos Materiales y Financieros',
+                'Educación Inicial',
+                'Educación Integral',
+                'Educación Mención Inglés', 
+                'Educación Mención Matemáticas',
+                'Fisioterapia',
+                'Medicina Veterinaria'
+            ]
+        })
+
+        onUpdated(() => {
+            console.log('updated Hook role ' + formUser.value.role + formUser.value.showCarrera)
+            if (formUser.value.role == 'Estudiante') {
+                formUser.value.showCarrera = true
+            } else {
+                formUser.value.showCarrera = false
+            }
+            console.log('valor del nombre ' + formUser.value.userReg.nombre)
+        })
+
+        return {
+            formUser, CambioRole
         }
     },
     methods: {
         Registrar() {
             console.log('Registrar el usuario')
         },
-        CambioRole() {
-            console.log('updated')
-            if (this.role == 'Estudiante') {
-                this.showCarrera = true
-            } else {
-                this.showCarrera = false
-            }
-        }
-    },
-    setup() {
-
-        const tipo = ref('')
-
-        const stopWatch = watch(tipo, () => {
-            console.log('wacth function ' + tipo)
-        })
-
     }
 })
 </script>
