@@ -1,8 +1,8 @@
-const { getAdministrator, insertAdministrator } = require('../../controllers/administrator/administrator');
+const { getUser, insertUser } = require('../../controllers/user/user');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
-const getAdministratorSchema = {
+const getUserSchema = {
     schema: {
         response: {
             200: {
@@ -13,8 +13,8 @@ const getAdministratorSchema = {
                         nombre : { type : 'string'},
                         apellido : { type : 'string' },
                         correo : { type : 'string' },
+                        carrera : { type : 'string'},
                         telf_1 : { type : 'string' },
-                        telf_2 : { type : 'string' },
                         id : { type : 'number' },
                         cedula: {type: 'number'}
                     }
@@ -22,12 +22,12 @@ const getAdministratorSchema = {
             }
         }
     },
-    handler: getAdministrator
+    handler: getUser
 }
 
 const bodyRegistrarJsonSchema = {
     type: 'object',
-    required: ['username', 'nombre', 'apellido', 'password', 'telf_1', 'correo', 'cedula'],
+    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula'],
     properties: {
       username: { type: 'string', maxLength: 20 },
       nombre: { type: 'string', maxLength: 30 },
@@ -36,21 +36,22 @@ const bodyRegistrarJsonSchema = {
       telf_1 : { type: 'string', maxLength: 11 },
       correo : { type: 'string', maxLength: 50},
       cedula : { type: 'number'},
-      telf_2 : { type: 'string', maxLength: 11, nullable : true } // or { type: 'number', nullable: true }
+      carrera : { type: 'string'},
+      id : { type: 'string'} // or { type: 'number', nullable: true }
     }
   }
 
-const registrarAdminSchema = {
+const registrarUserSchema = {
     schema: {
         body : bodyRegistrarJsonSchema
     }
 }
 
-const registrarAdminSchemaResponse = {
-    handler : insertAdministrator
+const registrarUserSchemaResponse = {
+    handler : insertUser
 }
 module.exports = {
-    getAdministratorSchema,
-    registrarAdminSchema,
-    registrarAdminSchemaResponse
+    getUserSchema,
+    registrarUserSchema,
+    registrarUserSchemaResponse
 }

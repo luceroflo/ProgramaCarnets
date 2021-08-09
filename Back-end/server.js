@@ -1,5 +1,4 @@
 const fastify = require('fastify')({ logger: true });
-
 //Registra el settings en variables de entorno para ser usadas globalmente
 require('dotenv').config();
 
@@ -12,6 +11,11 @@ fastify.register(require('fastify-swagger'), {
   }
 })
 
+//Registrar CORS
+fastify.register(require('fastify-cors'), { 
+    origin: "*",
+    methods: ["POST", "GET"]
+})
 //Register rate limit (cuantas solicitudes por ip)
 fastify.register(require('fastify-rate-limit'), {
   max: 100,
@@ -27,7 +31,7 @@ fastify.register(require('./routes/administrator/administrator'), { prefix: 'api
 //Run Server (ir al .env para cambiar el puerto)
 const start = async () => {
   try {
-     fastify.listen(process.env.PORT);
+     fastify.listen(process.env.PORT, '0.0.0.0');
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
@@ -35,6 +39,4 @@ const start = async () => {
 }
 
 start();
-
-
 
