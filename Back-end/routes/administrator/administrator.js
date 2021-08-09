@@ -13,6 +13,7 @@ function transactionRoutes(fastify, options, done) {
      * @param body {registrarAdminSchema}
      */
      fastify.post('/administrator/register', registrarAdminSchema, async (req, reply) => {
+        console.log(`Entro en endpoint registrar => ${req.body}`);
         await insertAdministrator(req, reply);
      })
 

@@ -1,13 +1,13 @@
-const {getAdmin, insertaAdmin } = require('./queries');
+const {getUser, insertaUser } = require('./queries');
 
 /**
  * Returns multiple sent transactions
  * @param {*} req  Proveniente del request
  * @param {*} reply  Envio del resultado en la conexion
  */
-const getAdministrator = async (req, reply) => {
+const getUser = async (req, reply) => {
     try {
-        var res = await getAdmin(req.params.username);
+        var res = await getUser(req.params.cedula);
         console.log(`Resultado del query ${res.rows}`)
         reply.send(res.rows);
     }
@@ -16,11 +16,11 @@ const getAdministrator = async (req, reply) => {
    }
 }
 
-const insertAdministrator = async (req, reply) => {
+const insertUser = async (req, reply) => {
     try{
-        var res = await insertaAdmin(req.body.username, req.body.password, req.body.nombre,
-                                    req.body.apellido, req.body.correo, req.body.telf_1,
-                                    req.body.telf_2, req.body.cedula);
+        var res = await insertaUser(req.body.nombre, req.body.apellido, req.body.cedula,
+                                    req.body.telf_1, req.body.correo, req.body.carrera,
+                                    req.body.id);
         reply.send({result: 'registro exitoso'});
 
     }
@@ -29,6 +29,6 @@ const insertAdministrator = async (req, reply) => {
     }
 }
 module.exports = {
-    getAdministrator,
-    insertAdministrator
+    getUser,
+    insertUser
 }

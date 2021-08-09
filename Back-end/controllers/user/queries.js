@@ -1,7 +1,7 @@
 const pg = require('../../db/postgres');
 
 
-const getAdmin = async (username) => {
+const getUser = async (username) => {
     console.log('Username is', username);
     
     return rows = await pg.query(`SELECT t.username, t.nombre, t.apellido,
@@ -11,10 +11,10 @@ const getAdmin = async (username) => {
                                   WHERE t.username like '%${username}%'
                                   ORDER BY t.id`);
 }
-const insertaAdmin = async (username, password, nombre, apellido, correo, telf_1, telf_2, cedula) => {    
-    return rows = await pg.query(`INSERT INTO carnet.tb_admin (
-                                  username, password, nombre, apellido, correo, telf_1, telf_2, cedula) 
-                                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [username, password, nombre, apellido, correo, telf_1, telf_2, cedula]);
+const insertaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, id) => {    
+    return rows = await pg.query(`INSERT INTO carnet.tb_usuario (
+                                  nombre, apellido, cedula, telf_1, correo, carrera, id) 
+                                  VALUES ($1, $2, $3, $4, $5, $6, $7)`, [nombre, apellido, cedula, telf_1, correo, carrera, id]);
 }
 
 const actualizaAdmin = async () => {
@@ -29,8 +29,8 @@ const borraAdmin = async () => {
 
 /*Exportar los modulos paera que puedan ser utilizados en cualquier parte de la estructura*/
 module.exports = {
-    insertaAdmin,
+    insertaUser,
     actualizaAdmin,
     borraAdmin,
-    getAdmin
+    getUser
 }

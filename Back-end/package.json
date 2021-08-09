@@ -9,13 +9,14 @@
   "author": "Oscar Quintero",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "faker": "^5.5.3",
     "fastify": "^3.19.0",
+    "fastify-cors": "^6.0.2",
     "fastify-rate-limit": "^5.5.0",
     "fastify-swagger": "^4.8.2",
     "fastify-websocket": "^3.2.0",
-    "nodemon": "^2.0.12",
     "pg": "^8.6.0"
   },
   "devDependencies": {
