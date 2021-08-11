@@ -1,18 +1,28 @@
 <template>
-    <div class="main-content">
-        <div>
-            <router-link :to="{ name: 'Agregar' }">
-                <button>
-                    Agregar
+    <div>
+        <div class="head-nav">
+            <h2>Sistema de carnetización</h2>
+            <router-link :to="{ name: 'VerAdmin' }">
+                <button class="config-button">
+                    Icono de config
                 </button>
             </router-link>
         </div>
-        <div>
-            <router-link :to="{ name: 'Ver' }">
-                <button>
-                    Ver - consultar
-                </button>
-            </router-link>
+        <div class="main-content">
+            <div>
+                <router-link :to="{ name: 'Agregar' }">
+                    <button>
+                        Agregar
+                    </button>
+                </router-link>
+            </div>
+            <div>
+                <router-link :to="{ name: 'Ver' }">
+                    <button>
+                        Ver - consultar
+                    </button>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -35,7 +45,7 @@ export default defineComponent({
         margin: auto;
         text-align: center;
     }
-    button {
+    .main-content button {
         cursor: pointer;
         padding: 50px;
         margin: auto;

@@ -39,7 +39,9 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "@vue/runtime-core";
+import getUsers from "../../funciones/getUsers"
 
 export default defineComponent({
     name: 'Ver'

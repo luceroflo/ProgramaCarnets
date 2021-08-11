@@ -29,6 +29,7 @@ fastify.register(require('./routes/administrator/administrator'));*/
 fastify.register(require('./routes/administrator/administrator'), { prefix: 'api/v1' });
 fastify.register(require('./routes/users/users'), { prefix: 'api/v1' });
 
+
 //Run Server (ir al .env para cambiar el puerto)
 const start = async () => {
   try {
