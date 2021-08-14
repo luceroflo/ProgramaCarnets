@@ -1,4 +1,4 @@
-const {getUser, insertaUser } = require('./queries');
+const {getUser, insertaUser, getAllUsers } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -8,8 +8,11 @@ const {getUser, insertaUser } = require('./queries');
 const getUserById = async (req, reply) => {
     try {
         var res = await getUser(req.params.cedula);
-        console.log(`Resultado del query ${res.rows}`)
-        reply.send(res.rows);
+        console.log(`Resultado del query ${res.rows}`);
+        if(res.rows[0] == null || res.rows[0] == undefined){
+            return reply.send({});
+        }
+        return reply.send(res.rows[0]);
     }
    catch (e) {
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
@@ -25,7 +28,7 @@ const getAllUsersC = async (req, reply) => {
     try {
         var res = await getAllUsers();
         console.log(`Resultado del query ${res.rows}`)
-        reply.send(res.rows);
+        reply.send(JSON.stringify(res.rows));
     }
    catch (e) {
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);

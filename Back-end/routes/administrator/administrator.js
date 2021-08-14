@@ -1,4 +1,4 @@
-const { getAdministratorSchema, registrarAdminSchema } = require('../administrator-schemas/schema');
+const { getAdministratorSchema, registrarAdminSchema, loginAdminSchema } = require('../administrator-schemas/schema');
 const { insertAdministrator } = require('../../controllers/administrator/administrator');
 
 function transactionRoutes(fastify, options, done) {
@@ -17,6 +17,7 @@ function transactionRoutes(fastify, options, done) {
         await insertAdministrator(req, reply);
      })
 
+     fastify.post('/administrator/login', loginAdminSchema)
     done();
 
 }

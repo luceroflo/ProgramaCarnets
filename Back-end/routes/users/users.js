@@ -17,7 +17,6 @@ function transactionRoutes(fastify, options, done) {
      * @param body {registrarUserSchema}
      */
      fastify.post('/user/register', registrarUserSchema, async (req, reply) => {
-        console.log(`Entro en endpoint registrar user => ${req.body}`);
         await insertUser(req, reply);
      })
 

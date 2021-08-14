@@ -1,4 +1,4 @@
-const { getUserById, insertUser, get, getAllUsersC } = require('../../controllers/user/users');
+const { getUserById, insertUser, getAllUsersC } = require('../../controllers/user/users');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -7,9 +7,8 @@ const getUserSchema = {
         response: {
             200: {
                 schema: {
-                    type: 'array',
+                    type: 'object',
                     properties: {
-                        username : {type : 'string'},
                         nombre : { type : 'string'},
                         apellido : { type : 'string' },
                         correo : { type : 'string' },
@@ -30,7 +29,7 @@ const getAllUserSchema = {
         response: {
             200: {
                 schema: {
-                    type: 'array',
+                    type: 'object',
                     properties: {
                         username : {type : 'string'},
                         nombre : { type : 'string'},

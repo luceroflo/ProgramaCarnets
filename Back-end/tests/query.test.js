@@ -1,5 +1,5 @@
-const { getAdmin, insertaAdmin } = require('../controllers/administrator/queries');
-const { getUser, insertaUser } = require('../controllers/user/queries');
+const { getAdmin, insertaAdmin, loginAdmin } = require('../controllers/administrator/queries');
+const { getUser, insertaUser, getAllUsers } = require('../controllers/user/queries');
 
 const faker = require('faker');
 
@@ -8,6 +8,7 @@ describe('Test report transaction queries', () => {
     it('Deberia traer administradores', async () => {
         
         let rows = await getAdmin('e');
+        console.log(rows.rows);
         expect(rows.rows.length).toBeGreaterThan(0);
     });
 
@@ -33,9 +34,28 @@ describe('Test report transaction queries', () => {
         let email = await faker.internet.email().toString().slice(0,20);
         let phone1 = await faker.phone.phoneNumber().toString().slice(0,11);
         let cedula = Math.floor(Math.random() * 100000000);
-        let rows = await insertaUser(name, lastName, cedula, phone1, email, name, 41);
+        let rows = await insertaUser(name, lastName, cedula, phone1, email, name, 10);
 
         expect(rows.rows.length).toBe(0);
+    })
+
+    it('Deberia loguear un admin', async () => {
+        let rows = await loginAdmin('Karina.Romaguera', 'n5pDR7GN1QIlEui');
+        console.log(rows);
+        expect(rows).toBe('SUCCESS');
+    })
+
+    it('Deberia traer todos los usuarios', async () => {
+        let rows = await getAllUsers();
+
+        expect(rows.rows.length).toBeGreaterThan(0);
+    })
+
+    it('Deberia traer un usuario', async () => {
+        let rows = await getUser(parseInt('91106244'));
+
+        console.log(rows.rows);
+        expect(rows.rows.length).toBeGreaterThan(0);
     })
 })
 
