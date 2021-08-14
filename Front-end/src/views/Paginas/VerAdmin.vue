@@ -3,16 +3,16 @@
         <form>
             <div class="top-front">
                 <div>
-                    <input v-model="primerNombre" type="text" required name="nombre" placeholder="Primer Nombre" />
-                    <input v-model="prmierApellido" type="text" required name="apellido" placeholder="Primer Apellido" />
+                    <input v-model="adminReg.nombre" type="text" required name="nombre" placeholder="Primer Nombre" />
+                    <input v-model="adminReg.apellido" type="text" required name="apellido" placeholder="Primer Apellido" />
                 </div>
                 <div>
-                    <input type="text" class="usuario" required name="usuario" placeholder="Usuario" v-model="username">                    
-                    <input v-model="cedula" type="text" required name="cedula" placeholder="Cédula">
+                    <input type="text" class="usuario" required name="usuario" placeholder="Usuario" v-model="adminReg.username">                    
+                    <input v-model="adminReg.cedula" type="text" required name="cedula" placeholder="Cédula">
                 </div>
                 <div>
-                    <input v-model="telefono" type="number" required name="Teléfono" placeholder="4242196405">
-                    <input v-model="correo" type="text" placeholder="Correo@gmail.com">               
+                    <input v-model="adminReg.telefono" type="number" required name="Teléfono" placeholder="4242196405">
+                    <input v-model="adminReg.correo" type="text" placeholder="Correo@gmail.com">               
                 </div>
                 <div>
                     <button @click="Registrar" type="submit">Guardar</button>
@@ -38,13 +38,23 @@ export default defineComponent({
     name: 'VerAdmin',
     // props: ['id'],
     setup() {
-
-        
-
         const userLoged : any = inject('userLoged')
         const { admin, error, load } = getAdmin(userLoged.value.user)
 
         load()
+
+        let adminReg : adminModel = {
+            username: '',
+            nombre: 'nombre',
+            apellido: 'apellido',
+            cedula: 5,
+            correo: 'raga@gmail.com',
+            telf_1: '04242186302',
+            telf_2: '04123858558',
+            //codigo: '',
+            password: '',
+            co_password: '',
+        }
 
         const registro = ref({             
             usuarioError: '',
@@ -53,7 +63,7 @@ export default defineComponent({
         })
     
         return {
-            admin, error
+            admin, error, adminReg
         }
 
         // const example : any = inject('example')
