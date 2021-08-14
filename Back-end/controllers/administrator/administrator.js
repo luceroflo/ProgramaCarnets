@@ -1,4 +1,4 @@
-const {getAdmin, insertaAdmin, loginAdmin } = require('./queries');
+const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -42,8 +42,30 @@ const loginAdministrator = async (req, reply) => {
     }
 }
 
+const logoutAdministrator = async (req, reply) => {
+    try{
+        var res = await logoutAdmin(req.params.username);
+        reply.send
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
+    }
+}
+
+const isAdminLogged = async (req, reply) => {
+    try{
+        var res = await isLogged(req.params.username);
+        reply.send(res.rows[0]);
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
+    }
+}
+
 module.exports = {
     getAdministrator,
     insertAdministrator,
-    loginAdministrator
+    loginAdministrator,
+    logoutAdministrator,
+    isAdminLogged
 }

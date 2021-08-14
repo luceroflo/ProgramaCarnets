@@ -1,4 +1,4 @@
-const { getAdministratorSchema, registrarAdminSchema, loginAdminSchema } = require('../administrator-schemas/schema');
+const { getAdministratorSchema, registrarAdminSchema, loginAdminSchema, logoutAdminSchema, isLoggedSchema } = require('../administrator-schemas/schema');
 const { insertAdministrator } = require('../../controllers/administrator/administrator');
 
 function transactionRoutes(fastify, options, done) {
@@ -17,7 +17,22 @@ function transactionRoutes(fastify, options, done) {
         await insertAdministrator(req, reply);
      })
 
+     /**
+      * Inicia sesión a un administrador
+      * @param body {loginAdminSchema}
+      */
      fastify.post('/administrator/login', loginAdminSchema)
+
+     /**
+      * @param body {logoutAdminSchema}
+      */
+     fastify.get('administrator/logout/:username', logoutAdminSchema)
+
+     /**
+      * @param body {}
+      */
+     fastify.get('administrator/checkout/:username', isLoggedSchema)
+    
     done();
 
 }
