@@ -1,4 +1,4 @@
-const { getUserById, insertUser, getAllUsersC } = require('../../controllers/user/users');
+const { getUserById, insertUser, getAllUsersC, updateUser } = require('../../controllers/user/users');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -15,7 +15,8 @@ const getUserSchema = {
                         carrera : { type : 'string'},
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
-                        cedula: {type: 'number'}
+                        cedula: {type: 'number'},
+                        foto: {type: 'string'}
                     }
                 }
             }
@@ -38,7 +39,8 @@ const getAllUserSchema = {
                         carrera : { type : 'string'},
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
-                        cedula: {type: 'number'}
+                        cedula: {type: 'number'},
+                        foto : { type: 'string'}
                     }
                 }
             }
@@ -49,7 +51,7 @@ const getAllUserSchema = {
 
 const bodyRegistrarJsonSchema = {
     type: 'object',
-    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula'],
+    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula', 'foto'],
     properties: {
       username: { type: 'string', maxLength: 20 },
       nombre: { type: 'string', maxLength: 30 },
@@ -59,7 +61,8 @@ const bodyRegistrarJsonSchema = {
       correo : { type: 'string', maxLength: 50},
       cedula : { type: 'number'},
       carrera : { type: 'string'},
-      id : { type: 'string'} // or { type: 'number', nullable: true }
+      id : { type: 'string'},
+      foto: {type: 'string'}
     }
   }
 
@@ -69,6 +72,26 @@ const registrarUserSchema = {
     }
 }
 
+const updateUserSchema = {
+    schema: {
+        body : {
+            type: 'object',
+            required : ['nombre', 'apellido', 'telf_1', 'correo', 'cedula', 'carrera'],
+            properties : {
+                nombre: { type:'string', maxLength : 20},
+                apellido: {type: 'string', maxLength: 30},
+                telf_1: {type: 'string', maxLength: 11},
+                correo: {type: 'string', maxLength: 50},
+                cedula: {type: 'number'},
+                carrera: {type: 'string', maxLength: 100},
+                cedulaN: {type: 'number'},
+                foto: {type: 'string'}
+            }
+        }
+    },
+    handler: updateUser
+}
+
 const registrarUserSchemaResponse = {
     handler : insertUser
 }
@@ -76,5 +99,6 @@ module.exports = {
     getUserSchema,
     registrarUserSchema,
     registrarUserSchemaResponse,
-    getAllUserSchema
+    getAllUserSchema,
+    updateUserSchema
 }

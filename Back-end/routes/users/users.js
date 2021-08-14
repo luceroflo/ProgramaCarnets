@@ -1,4 +1,4 @@
-const { getUserSchema, registrarUserSchema, getAllUserSchema } = require('../users-schema/schema');
+const { getUserSchema, registrarUserSchema, getAllUserSchema, updateUserSchema } = require('../users-schema/schema');
 const { insertUser } = require('../../controllers/user/users');
 
 function transactionRoutes(fastify, options, done) {
@@ -20,6 +20,10 @@ function transactionRoutes(fastify, options, done) {
         await insertUser(req, reply);
      })
 
+     /**
+      * Actualiza un usuario
+      */
+     fastify.post('/user/update', updateUserSchema)
     done();
 
 }
