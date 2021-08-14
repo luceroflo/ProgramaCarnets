@@ -45,7 +45,7 @@ const loginAdministrator = async (req, reply) => {
 const logoutAdministrator = async (req, reply) => {
     try{
         var res = await logoutAdmin(req.params.username);
-        reply.send
+        reply.send(JSON.stringify(res.rows));
     }
     catch(e){
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
@@ -55,7 +55,7 @@ const logoutAdministrator = async (req, reply) => {
 const isAdminLogged = async (req, reply) => {
     try{
         var res = await isLogged(req.params.username);
-        reply.send(res.rows[0]);
+        reply.send(JSON.stringify(res.rows[0]));
     }
     catch(e){
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
