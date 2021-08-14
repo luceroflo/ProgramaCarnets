@@ -11,7 +11,7 @@
 
               <input
                 type="text"
-                v-model="user"
+                v-model="userLogin.user"
                 name="Cedula "
                 placeholder="Usuario"
                 class="form__input"
@@ -20,7 +20,7 @@
               />
               <input
                 type="password"
-                v-model="password"
+                v-model="userLogin.password"
                 name="contraseña"
                 placeholder="Contraseña"
                 class="form__input"
@@ -33,7 +33,7 @@
               </div>
 
               <router-link :to="{ name: 'Principal' }">
-                <button @click="submit" type="submit" value="Conectarse" class="form__submit" >
+                <button type="submit" value="Conectarse" class="form__submit" >
                   Conectarse
                 </button>
               </router-link>
@@ -52,27 +52,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/runtime-core";
+import { defineComponent, inject, provide, ref } from "@vue/runtime-core";
 import login from '../funciones/login'
 
 export default defineComponent({
     name: 'Ingreso',
-    data() {
-      return {
-        user: '',
-        password: '',
-        errores: '' as any
-      }
-    },
-    methods: {
-      submit() {
+    setup() {
+      // const userLogin = ref({
+      //   user: '',
+      //   password: '',
+      // })
+
+      // provide('userLoged', userLogin)
+
+      const userLogin : any = inject('userLoged')
+
+
+      let errores = '' as any
+
+      const submit = () => {
         
-        const { result, error, load } = login(this.user, this.password)
+        console.log(userLogin.value.user + ' ' + userLogin.value.password)
+        const { result, error, load } = login(userLogin.value.user, userLogin.value.password)
         load()
 
         if (!result) {
-          this.errores = error.value
+          errores = error.value
         }
+      }
+
+      return {
+        submit, userLogin, errores
       }
     }
 })

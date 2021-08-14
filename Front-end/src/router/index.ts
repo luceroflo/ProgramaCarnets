@@ -9,11 +9,6 @@ import NotFound from '../views/NotFound.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Principal',
-    component: Principal
-  },
-  {
     path: '/ingreso',
     name: 'Ingreso',
     component: Ingreso
@@ -24,19 +19,28 @@ const routes: Array<RouteRecordRaw> = [
     component: Registro
   },
   {
+    path: '/',
+    name: 'Principal',
+    component: Principal,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/ver',
     name: 'Ver',
-    component: Ver
+    component: Ver,
+    meta: { requiresAuth: true }
   },
   {
     path: '/VerAdmin',
     name: 'VerAdmin',
-    component: VerAdmin
+    component: VerAdmin,
+    meta: { requiresAuth: true }
   },
   {
     path: '/agregar',
     name: 'Agregar',
-    component: Agregar
+    component: Agregar,
+    meta: { requiresAuth: true }
   },
   //cathcall 404
   {
@@ -49,6 +53,16 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.meta.requiresAuth) {
+    //need to login
+    next()
+  }
+  else {
+    next();
+  }
 })
 
 export default router

@@ -19,7 +19,7 @@ const insertAdmin = (content: adminModel) => {
             }
         })
         .then((response) => response)
-        .then((json) => console.log(json))
+        .then((json) => console.log(json.data))
         .catch(error => console.log(error))
 
       }

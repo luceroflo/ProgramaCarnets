@@ -89,7 +89,7 @@
                     required
                 />
                 <div v-if="registro.co_passwordError" class="error">{{registro.co_passwordError}}</div>
-                <button @click="handleSubmit" type="submit" value="Registrate" class="form__submit" >
+                <button type="submit" value="Registrate" class="form__submit" >
                   Registrate
                 </button>
 

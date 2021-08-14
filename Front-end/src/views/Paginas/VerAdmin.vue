@@ -27,7 +27,7 @@
 
 <script lang="ts">
 
-import { defineComponent, ref } from "@vue/runtime-core";
+import { defineComponent, inject, ref } from "@vue/runtime-core";
 import getAdmin from "../../funciones/getAdmin"
 import { adminModel } from "../../modelo/modeloAdmin"
 
@@ -36,10 +36,13 @@ import { adminModel } from "../../modelo/modeloAdmin"
 
 export default defineComponent({
     name: 'VerAdmin',
-    props: ['id'],
-    setup(props) {
+    // props: ['id'],
+    setup() {
 
-        const { admin, error, load } = getAdmin(props.id)
+        
+
+        const userLoged : any = inject('userLoged')
+        const { admin, error, load } = getAdmin(userLoged.value.user)
 
         load()
 
@@ -52,6 +55,10 @@ export default defineComponent({
         return {
             admin, error
         }
+
+        // const example : any = inject('example')
+        // console.log('provide - inject example : ' + example.value.uno)
+        // console.log('provide - inject example : ' + example.value.dos)
     }
 })
 </script>
