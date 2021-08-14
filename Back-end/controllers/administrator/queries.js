@@ -28,6 +28,13 @@ const loginAdmin = async (username, password) => {
         return 'SUCCESS';
 }
 
+const logoutAdmin = async (username) => {
+    return rows = await pg.query('UPDATE carnet.tb_admin set logged = false where username = $1', [username]);
+}
+
+const isLogged = async (username) => {
+    return rows = await pg.query('SELECT logged from carnet.tb_admin where username = $1', [username]);
+}
 const borraAdmin = async () => {
     return rows = await pg.query(`INSERT INTO sglbtr a.id_unico, a.fe_regist, a.msgid_orgnl,
                                     FROM sglbtr.transferencia_enviada a limit 100`);
@@ -39,5 +46,7 @@ module.exports = {
     actualizaAdmin,
     borraAdmin,
     getAdmin,
-    loginAdmin
+    loginAdmin,
+    logoutAdmin,
+    isLogged
 }

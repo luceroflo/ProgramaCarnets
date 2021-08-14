@@ -1,4 +1,4 @@
-const { getAdmin, insertaAdmin, loginAdmin } = require('../controllers/administrator/queries');
+const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('../controllers/administrator/queries');
 const { getUser, insertaUser, getAllUsers } = require('../controllers/user/queries');
 
 const faker = require('faker');
@@ -8,7 +8,6 @@ describe('Test report transaction queries', () => {
     it('Deberia traer administradores', async () => {
         
         let rows = await getAdmin('e');
-        console.log(rows.rows);
         expect(rows.rows.length).toBeGreaterThan(0);
     });
 
@@ -41,7 +40,6 @@ describe('Test report transaction queries', () => {
 
     it('Deberia loguear un admin', async () => {
         let rows = await loginAdmin('Karina.Romaguera', 'n5pDR7GN1QIlEui');
-        console.log(rows);
         expect(rows).toBe('SUCCESS');
     })
 
@@ -53,9 +51,19 @@ describe('Test report transaction queries', () => {
 
     it('Deberia traer un usuario', async () => {
         let rows = await getUser(parseInt('91106244'));
-
-        console.log(rows.rows);
         expect(rows.rows.length).toBeGreaterThan(0);
+    })
+
+    it('Deberia cerrar sesion usuario', async () => {
+        let username = 'Karina.Romaguera';
+        let rows = await logoutAdmin(username);
+        expect(rows.rows.length).toBe(0);
+    })
+
+    it('Deberia chequear usuario', async () => {
+        let username = 'Karina.Romaguera';
+        let rows = await isLogged(username);
+        expect(rows.rows[0].logged).toBe(false);
     })
 })
 

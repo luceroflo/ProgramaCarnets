@@ -1,4 +1,4 @@
-const { getAdministrator, insertAdministrator, loginAdministrator } = require('../../controllers/administrator/administrator');
+const { getAdministrator, insertAdministrator, loginAdministrator, logoutAdministrator, isAdminLogged } = require('../../controllers/administrator/administrator');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -39,6 +39,29 @@ const loginAdminSchema = {
     handler: loginAdministrator
 }
 
+const logoutAdminSchema = {
+    schema: {
+        response: {
+            200: {}
+        }
+    },
+    handler: logoutAdministrator
+}
+
+const isLoggedSchema = {
+    schema: {
+        response:{
+            200 : {
+                type:'object',
+                properties: {
+                    logged : {type:'boolean'}
+                }
+            }
+        }
+    },
+    handler: isAdminLogged
+}
+
 const bodyRegistrarJsonSchema = {
     type: 'object',
     required: ['username', 'nombre', 'apellido', 'password', 'telf_1', 'correo', 'cedula'],
@@ -67,5 +90,7 @@ module.exports = {
     getAdministratorSchema,
     registrarAdminSchema,
     registrarAdminSchemaResponse,
-    loginAdminSchema
+    loginAdminSchema,
+    logoutAdminSchema,
+    isLoggedSchema
 }
