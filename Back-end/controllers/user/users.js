@@ -1,4 +1,4 @@
-const {getUser, insertaUser, getAllUsers } = require('./queries');
+const {getUser, insertaUser, getAllUsers, actualizaUser } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -10,9 +10,9 @@ const getUserById = async (req, reply) => {
         var res = await getUser(req.params.cedula);
         console.log(`Resultado del query ${res.rows}`);
         if(res.rows[0] == null || res.rows[0] == undefined){
-            return reply.send({});
+            return reply.send(JSON.stringify({}));
         }
-        return reply.send(res.rows[0]);
+        return reply.send(JSON.stringify(res.rows[0]));
     }
    catch (e) {
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
@@ -40,8 +40,19 @@ const insertUser = async (req, reply) => {
         var res = await insertaUser(req.body.nombre, req.body.apellido, req.body.cedula,
                                     req.body.telf_1, req.body.correo, req.body.carrera,
                                     req.body.id);
-        reply.send({result: 'registro exitoso'});
+        reply.send(JSON.stringify({result: 'registro exitoso'}));
 
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
+    }
+}
+
+const updateUser = async (req, reply) => {
+    try{
+        var res = await actualizaUser(req.body.nombre, req.body.apellido, req.body.cedula,
+            req.body.telf_1, req.body.correo, req.body.carrera, req.body.cedulaN);
+        reply.send(JSON.stringify({result: 'actualizacion exitosas'}));
     }
     catch(e){
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
@@ -50,5 +61,6 @@ const insertUser = async (req, reply) => {
 module.exports = {
     getUserById,
     insertUser,
-    getAllUsersC
+    getAllUsersC,
+    updateUser
 }

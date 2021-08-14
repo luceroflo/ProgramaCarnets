@@ -26,9 +26,14 @@ const insertaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, id
                                   VALUES ($1, $2, $3, $4, $5, $6, $7)`, [nombre, apellido, cedula, telf_1, correo, carrera, id]);
 }
 
+const actualizaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, cedulaN) => {
+    return rows = await pg.query(`UPDATE carnet.tb_usuario set nombre = $1, apellido = $2, cedula = $7,
+                                 telf_1 = $4, correo = $5, carrera = $6 where cedula = $3`, [nombre,apellido,cedula,telf_1,correo,carrera, cedulaN]);
+}
 /*Exportar los modulos paera que puedan ser utilizados en cualquier parte de la estructura*/
 module.exports = {
     insertaUser,
     getUser,
-    getAllUsers
+    getAllUsers,
+    actualizaUser
 }

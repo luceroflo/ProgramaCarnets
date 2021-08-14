@@ -1,5 +1,5 @@
 const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('../controllers/administrator/queries');
-const { getUser, insertaUser, getAllUsers } = require('../controllers/user/queries');
+const { getUser, insertaUser, getAllUsers, actualizaUser } = require('../controllers/user/queries');
 
 const faker = require('faker');
 
@@ -64,6 +64,15 @@ describe('Test report transaction queries', () => {
         let username = 'Karina.Romaguera';
         let rows = await isLogged(username);
         expect(rows.rows[0].logged).toBe(false);
+    })
+
+    it('Deberia actualizar usuario', async () => {
+        let usuario = 91106244;
+
+        let rows = await actualizaUser('si', 'si', usuario, 'no', 'no', 'no', usuario);
+
+        expect(rows.rows.length).toBe(0);
+
     })
 })
 
