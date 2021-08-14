@@ -1,19 +1,19 @@
 const pg = require('../../db/postgres');
 
 
-const getUser = async (username) => {
-    console.log('Username is', username);
+const getUser = async (cedula) => {
+    console.log('Cedula is', cedula);
     
     return rows = await pg.query(`SELECT t.nombre, t.apellido,
                                          t.correo, t.telf_1,
                                          t.id, t.cedula
                                   FROM carnet.tb_usuario t
-                                  WHERE t.cedula like '%${username}%'
+                                  WHERE t.cedula  = ${parseInt(cedula)}
                                   ORDER BY t.id`);
 }
 
 const getAllUsers = async () => {
-    return rows = await pg.query(`SELECT t.username, t.nombre, t.apellido,
+    return rows = await pg.query(`SELECT t.nombre, t.apellido,
                                     t.correo, t.telf_1, 
                                     t.id, t.cedula
                                   FROM carnet.tb_usuario t
