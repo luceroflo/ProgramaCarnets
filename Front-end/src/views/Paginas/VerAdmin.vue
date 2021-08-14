@@ -1,18 +1,18 @@
 <template>
       <div class="add-contenedor">
         <form>
-            <div class="top-front">
+            <div v-if="admin" class="top-front">
                 <div>
-                    <input v-model="adminReg.nombre" type="text" required name="nombre" placeholder="Primer Nombre" />
-                    <input v-model="adminReg.apellido" type="text" required name="apellido" placeholder="Primer Apellido" />
+                    <input v-model="admin.nombre" type="text" required name="nombre" placeholder="nombre" />
+                    <input v-model="admin.apellido" type="text" required name="apellido" placeholder="apellido" />
                 </div>
                 <div>
-                    <input type="text" class="usuario" required name="usuario" placeholder="Usuario" v-model="adminReg.username">                    
-                    <input v-model="adminReg.cedula" type="text" required name="cedula" placeholder="Cédula">
+                    <input  v-model="admin.username" type="text" class="usuario" required name="usuario" placeholder="username">                    
+                    <input v-model="admin.cedula" type="text" required name="cedula" placeholder="cedula">
                 </div>
                 <div>
-                    <input v-model="adminReg.telefono" type="number" required name="Teléfono" placeholder="4242196405">
-                    <input v-model="adminReg.correo" type="text" placeholder="Correo@gmail.com">               
+                    <input v-model="admin.telf_1" type="number" required name="Teléfono" placeholder="relefono">
+                    <input v-model="admin.correo" type="text" placeholder="correo">               
                 </div>
                 <div>
                     <button @click="Registrar" type="submit">Guardar</button>
@@ -20,15 +20,16 @@
                         <button>Cancelar</button>
                     </router-link>  
                 </div>                  
-            </div>              
+            </div>    
         </form>
     </div>
 </template>
 
 <script lang="ts">
 
-import { defineComponent, inject, ref } from "@vue/runtime-core";
+import { defineComponent, inject, onMounted, onUpdated, ref } from "@vue/runtime-core";
 import getAdmin from "../../funciones/getAdmin"
+import getAdmin2 from "../../funciones/getAdmin2"
 import { adminModel } from "../../modelo/modeloAdmin"
 
 //Falta el GET de la data
@@ -39,31 +40,52 @@ export default defineComponent({
     // props: ['id'],
     setup() {
         const userLoged : any = inject('userLoged')
-        const { admin, error, load } = getAdmin(userLoged.value.user)
+        userLoged.value.username = 'Garfield73'
+        const { admin, error, load } = getAdmin2(userLoged.value.username)
 
-        load()
-
-        let adminReg : adminModel = {
-            username: '',
-            nombre: 'nombre',
-            apellido: 'apellido',
-            cedula: 5,
-            correo: 'raga@gmail.com',
-            telf_1: '04242186302',
-            telf_2: '04123858558',
-            //codigo: '',
-            password: '',
-            co_password: '',
-        }
-
-        const registro = ref({             
-            usuarioError: '',
-            passwordError: '',
-            co_passwordError: ''
+        
+        onMounted(() => {
+            load()
         })
+        
+        //console.log(admin.value)
+        onUpdated(() => {
+            console.log('updated')
+            console.log(admin)
+        })
+
+        // console.log(dataString.value)
+        // jsonString = JSON.stringify(dataString.value);
+        // console.log('JSON String ' + jsonString)
+        // let admin : adminModel = JSON.parse(jsonString)
+
+        //let some : adminModel = admin.value
+
+
+        // const body : Promise<{ dataString : string, error : any }> = getAdmin('Garfield73')
+        // const y = getAdmin('Garfield73');
+        // let error;
+        // let dataString : string;
+
+        // body.then(a => {
+        //     console.log('AQUI EL RESULTADO: ', a);
+        //     dataString = a.dataString;
+        //     error = a.error;
+
+        //     admin = JSON.parse(dataString) 
+        // })
+        // const registro = ref({             
+        //     usuarioError: '',
+        //     passwordError: '',
+        //     co_passwordError: ''
+        // })
+
+        // console.log('ADMIN USERNAME: ', admin.username)
+
+        //console.log(adminReg.username)
     
         return {
-            admin, error, adminReg
+            error, admin
         }
 
         // const example : any = inject('example')

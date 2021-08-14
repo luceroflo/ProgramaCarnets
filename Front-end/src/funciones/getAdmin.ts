@@ -1,17 +1,31 @@
 import { ref } from "@vue/reactivity";
 import axios from "axios";
+import { adminModel } from "../modelo/modeloAdmin";
+
 
 const getAdmin = (id: string) => {
-    const admin = ref(null)
-    const error = ref(null)
+    const error = ref(null);
+
+    let dataString = 'EMPTY'
 
     const load = async () => {
-
         try {
-            let data = await axios.get('http://localhost:3000/api/v1/administrator/user/' + id)
-            .then((response) => response)
-            .then((json) => console.log(json))
-            .catch(error => console.log(error))
+            let data = await axios.get('http://localhost:3000/api/v1/administrator/user/' + id);
+
+            console.log('Y MIYAGUI', data.data[0]);
+            dataString = JSON.stringify(data.data[0]);
+            // .then((response) => response)
+            // .then((json) => {
+            //     dataString = JSON.stringify(json.data[0])
+            //     console.log(dataString)
+            //     // admin = JSON.parse(dataString)
+            //     // console.log(admin.username)
+            //     // console.log(admin.nombre)
+            // })
+            // .catch(error => console.log(error))
+
+            console.log('GET METHOD RESULT AFTER PARSING')
+
             // .then((result) => {
             //     console.log(result.data);
             // }
@@ -27,9 +41,13 @@ const getAdmin = (id: string) => {
              error.value = err.message
              console.log(error.value)
         }
+        finally{
+            return {dataString, error}
+        }
     }
 
-    return { admin, error, load }
+    console.log('INICIA');
+    return Promise.resolve(load())
 }
 
 export default getAdmin

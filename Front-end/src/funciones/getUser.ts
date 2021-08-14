@@ -6,7 +6,7 @@ const getUser = (id: String) => {
     
     const load = async () => {
     try {
-        let data = await fetch('http://localhost:3000/api/v1/user/')
+        let data = await fetch('http://localhost:3000/api/v1/user/' + id)
         if (!data.ok) {
           throw Error('No data available')
         }
