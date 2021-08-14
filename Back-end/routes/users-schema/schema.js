@@ -49,7 +49,7 @@ const getAllUserSchema = {
 
 const bodyRegistrarJsonSchema = {
     type: 'object',
-    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula'],
+    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula', 'foto'],
     properties: {
       username: { type: 'string', maxLength: 20 },
       nombre: { type: 'string', maxLength: 30 },
@@ -59,7 +59,8 @@ const bodyRegistrarJsonSchema = {
       correo : { type: 'string', maxLength: 50},
       cedula : { type: 'number'},
       carrera : { type: 'string'},
-      id : { type: 'string'} // or { type: 'number', nullable: true }
+      id : { type: 'string'},
+      foto: {type: 'string'}
     }
   }
 
@@ -81,7 +82,8 @@ const updateUserSchema = {
                 correo: {type: 'string', maxLength: 50},
                 cedula: {type: 'number'},
                 carrera: {type: 'string', maxLength: 100},
-                cedulaN: {type: 'number'}
+                cedulaN: {type: 'number'},
+                foto: {type: 'string'}
             }
         }
     },

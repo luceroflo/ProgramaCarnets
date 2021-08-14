@@ -33,7 +33,7 @@ describe('Test report transaction queries', () => {
         let email = await faker.internet.email().toString().slice(0,20);
         let phone1 = await faker.phone.phoneNumber().toString().slice(0,11);
         let cedula = Math.floor(Math.random() * 100000000);
-        let rows = await insertaUser(name, lastName, cedula, phone1, email, name, 10);
+        let rows = await insertaUser(name, lastName, cedula, phone1, email, name, 10, 'FOTO');
 
         expect(rows.rows.length).toBe(0);
     })
@@ -69,7 +69,7 @@ describe('Test report transaction queries', () => {
     it('Deberia actualizar usuario', async () => {
         let usuario = 91106244;
 
-        let rows = await actualizaUser('si', 'si', usuario, 'no', 'no', 'no', usuario);
+        let rows = await actualizaUser('si', 'si', usuario, 'no', 'no', 'no', usuario, 'FOTO');
 
         expect(rows.rows.length).toBe(0);
 
