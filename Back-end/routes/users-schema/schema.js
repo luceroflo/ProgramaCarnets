@@ -15,7 +15,8 @@ const getUserSchema = {
                         carrera : { type : 'string'},
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
-                        cedula: {type: 'number'}
+                        cedula: {type: 'number'},
+                        foto: {type: 'string'}
                     }
                 }
             }
@@ -38,7 +39,8 @@ const getAllUserSchema = {
                         carrera : { type : 'string'},
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
-                        cedula: {type: 'number'}
+                        cedula: {type: 'number'},
+                        foto : { type: 'string'}
                     }
                 }
             }
