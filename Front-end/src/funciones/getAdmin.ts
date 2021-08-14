@@ -8,7 +8,7 @@ const getAdmin = (id: string) => {
     const load = async () => {
 
         try {
-            let data = await axios.get('http://localhost:3000/api/v1/' + id)
+            let data = await axios.get('http://localhost:3000/api/v1/administrator/user/' + id)
             .then((response) => response)
             .then((json) => console.log(json))
             .catch(error => console.log(error))

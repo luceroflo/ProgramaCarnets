@@ -28,10 +28,14 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, inject } from "@vue/runtime-core";
 
 export default defineComponent({
-    name: 'Principal'
+    name: 'Principal',
+    setup() {
+        const userLoged = inject('userLoged')
+        console.log(userLoged.value.user + ' ' + userLoged.value.password)
+    }
 })
 </script>
 
