@@ -26,7 +26,7 @@ export default defineComponent({
       provide('userLoged', userLogin)
 
 
-    provide('example', example)
+    //provide('example', example)
   }
 })
 </script>

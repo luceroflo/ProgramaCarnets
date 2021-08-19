@@ -7,6 +7,9 @@ const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('./
  */
 const getAdministrator = async (req, reply) => {
     try {
+        // if (req.params.username == null || req.params.username == undefined || req.params.username == ""){
+        //     return reply.send(JSON.stringify([]));
+        // }
         var res = await getAdmin(req.params.username);
         console.log('Resultado del query', res.rows)
         reply.send(JSON.stringify(res.rows));

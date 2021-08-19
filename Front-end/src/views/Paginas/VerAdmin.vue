@@ -1,7 +1,7 @@
 <template>
       <div class="add-contenedor">
         <form>
-            <div v-if="admin" class="top-front">
+            <div v-if="dataValue" class="top-front">
                 <div>
                     <input v-model="admin.nombre" type="text" required name="nombre" placeholder="nombre" />
                     <input v-model="admin.apellido" type="text" required name="apellido" placeholder="apellido" />
@@ -11,7 +11,7 @@
                     <input v-model="admin.cedula" type="text" required name="cedula" placeholder="cedula">
                 </div>
                 <div>
-                    <input v-model="admin.telf_1" type="number" required name="Teléfono" placeholder="relefono">
+                    <input v-model="admin.telf_1" type="text" required name="Teléfono" placeholder="relefono">
                     <input v-model="admin.correo" type="text" placeholder="correo">               
                 </div>
                 <div>
@@ -20,19 +20,21 @@
                         <button>Cancelar</button>
                     </router-link>  
                 </div>                  
-            </div>    
+            </div> 
+            <div v-else>
+                Cargando datos ...
+            </div>   
         </form>
     </div>
 </template>
 
 <script lang="ts">
 
-import { defineComponent, inject, onMounted, onUpdated, ref } from "@vue/runtime-core";
+import { defineComponent, inject, onMounted, onUpdated, ref, watch } from "@vue/runtime-core";
 import getAdmin from "../../funciones/getAdmin"
 import getAdmin2 from "../../funciones/getAdmin2"
 import { adminModel } from "../../modelo/modeloAdmin"
 
-//Falta el GET de la data
 //Falta el POST de la data para el UPDATE
 
 export default defineComponent({
@@ -40,57 +42,23 @@ export default defineComponent({
     // props: ['id'],
     setup() {
         const userLoged : any = inject('userLoged')
-        userLoged.value.username = 'Garfield73'
-        const { admin, error, load } = getAdmin2(userLoged.value.username)
-
-        
+        //userLoged.value.username = 'Garfield73'
+        let { admin, error, load, dataValue } = getAdmin2(userLoged.value.user)
+                
         onMounted(() => {
+            console.log(admin.value)
+            console.log(userLoged.value.user)
             load()
+            console.log('on mounted value ' + dataValue.value)
         })
-        
-        //console.log(admin.value)
         onUpdated(() => {
-            console.log('updated')
-            console.log(admin)
+            console.log("Updated")
+            console.log('show value updated ' + dataValue.value)
         })
 
-        // console.log(dataString.value)
-        // jsonString = JSON.stringify(dataString.value);
-        // console.log('JSON String ' + jsonString)
-        // let admin : adminModel = JSON.parse(jsonString)
-
-        //let some : adminModel = admin.value
-
-
-        // const body : Promise<{ dataString : string, error : any }> = getAdmin('Garfield73')
-        // const y = getAdmin('Garfield73');
-        // let error;
-        // let dataString : string;
-
-        // body.then(a => {
-        //     console.log('AQUI EL RESULTADO: ', a);
-        //     dataString = a.dataString;
-        //     error = a.error;
-
-        //     admin = JSON.parse(dataString) 
-        // })
-        // const registro = ref({             
-        //     usuarioError: '',
-        //     passwordError: '',
-        //     co_passwordError: ''
-        // })
-
-        // console.log('ADMIN USERNAME: ', admin.username)
-
-        //console.log(adminReg.username)
-    
         return {
-            error, admin
+            error, admin, dataValue
         }
-
-        // const example : any = inject('example')
-        // console.log('provide - inject example : ' + example.value.uno)
-        // console.log('provide - inject example : ' + example.value.dos)
     }
 })
 </script>
