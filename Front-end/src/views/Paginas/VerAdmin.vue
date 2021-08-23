@@ -21,7 +21,7 @@
                     </router-link>  
                 </div>                  
             </div> 
-            <div v-else>
+            <div class="loading" v-else>
                 Cargando datos ...
             </div>   
         </form>
@@ -151,6 +151,8 @@ export default defineComponent({
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
-
+    .loading {
+        margin-top: 30px;
+    }
 
 </style>

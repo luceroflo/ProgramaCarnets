@@ -24,17 +24,21 @@
                 <label for="Editar">Editar</label>
                 <label for="Eliminar">Eliminar</label>
             </div>
-            <div v-if="users" class="content-data">
+            <div v-if="showData" class="content-data">
                 <div v-for="user in users"  v-bind:value="user" v-bind:key="user">
                     <p>{{user.nombre}}</p>
                     <p>{{user.cedula}}</p>
                     <p>{{user.id}}</p>
-                    <button>editar</button>
+                    <router-link :to="{ name: 'EditUser' }">
+                        <button>
+                            editar
+                        </button>
+                    </router-link>
                     <button>eliminar</button>
                 </div>
             </div>
-            <div v-else>
-                No data available
+            <div class="loading" v-else>
+                Cargando la data ...
             </div>
         </div>
     </div>
@@ -43,34 +47,35 @@
 
 <script lang="ts">
 
-import { defineComponent, onUpdated } from "@vue/runtime-core";
-import { computed, ref } from "vue";
+import { defineComponent, onMounted, onUpdated } from "@vue/runtime-core";
+import { computed, provide, ref } from "vue";
 import getUsers from "../../funciones/getUsers"
 import { userModel } from "../../modelo/modeloUser";
 
 export default defineComponent({
     name: 'Ver',
-    	
     setup() {
 
-        let { users, error, load } = getUsers()
-        load()
+        let { users, error, load, showData } = getUsers()
+        provide('userData', users)
+
         const search = ref('') 
         let names = ref(users)
         let searchResult: userModel[] = [];
         let x : any;
         const matching = computed(() => {
-            //console.log('los valores', names.value)
-            // return names.value.filter((name) => {
-            //     //console.log(name);
-            //    // name.includes(search.value)
-            //     })
+
+        })
+
+        onMounted(() => {
+            load()
         })
 
         onUpdated(() => {            
             // names.value.filter((n) => {
             //     n.includes(search);
             // })
+            console.log(showData.value)
             names.value.forEach((a : userModel) => {
                 //console.log(a.nombre);
                 if(a.nombre == search.value || a.cedula == parseInt(search.value)){
@@ -84,7 +89,7 @@ export default defineComponent({
 
 
         return {
-            users, error, search, matching
+            users, error, search, matching, showData
         }
     }
 })
@@ -103,5 +108,8 @@ export default defineComponent({
     padding: 30px;
     background-color: aliceblue;
 }
+    .loading {
+        margin-top: 30px;
+    }
 
 </style>

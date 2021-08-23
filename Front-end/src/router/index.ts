@@ -4,6 +4,7 @@ import Ingreso from '../views/Ingreso.vue'
 import Registro from '../views/Registro.vue'
 import Ver from '../views/Paginas/VerUsers.vue'
 import VerAdmin from '../views/Paginas/VerAdmin.vue'
+import EditUser from '../views/Paginas/EditUser.vue'
 import Agregar from '../views/Paginas/Agregar.vue'
 import NotFound from '../views/NotFound.vue'
 
@@ -11,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/ingreso',
     name: 'Ingreso',
-    component: Ingreso
+    component: Ingreso,
   },
   {
     path: '/registro',
@@ -37,6 +38,13 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/EditUser',
+    name: 'EditUser',
+    component: EditUser,
+    props: true,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/agregar',
     name: 'Agregar',
     component: Agregar,
@@ -51,7 +59,8 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  // history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes
 })
 
