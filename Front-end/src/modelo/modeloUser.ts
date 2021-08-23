@@ -4,12 +4,14 @@ export interface userModel {
     nombre: String,
     apellido: String,
     cedula: Number | null,
-    telefono: String,
+    telf_1: String,
     correo: String,
     //role: 'Estudiante' as any,
     
-    career: String,
+    carrera: String,
     especializacion: String,
+    foto: String,
+    id: String
     
     //carreras: []
 }

@@ -51,12 +51,11 @@ const getAllUserSchema = {
 
 const bodyRegistrarJsonSchema = {
     type: 'object',
-    required: ['nombre', 'apellido', 'password', 'telf_1', 'correo', 'carrera', 'id', 'cedula', 'foto'],
+    required: ['nombre', 'apellido', 'telf_1', 'correo', 'carrera', 'id', 'cedula', 'foto'],
     properties: {
       username: { type: 'string', maxLength: 20 },
       nombre: { type: 'string', maxLength: 30 },
       apellido: { type: 'string', maxLength: 30 },
-      password: { type: 'string', maxLength: 20 },
       telf_1 : { type: 'string', maxLength: 11 },
       correo : { type: 'string', maxLength: 50},
       cedula : { type: 'number'},

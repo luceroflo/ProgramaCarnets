@@ -3,16 +3,12 @@
         <form @submit.prevent="handleSubmit">
             <div class="top-front">
                 <div>
-                    <input v-model="formUser.userReg.nombre" type="text" required name="nombre" placeholder="Primer Nombre" />
-                    <input v-model="formUser.userReg.apellido" type="text" required name="apellido" placeholder="Primer Apellido" />
+                    <input v-model="formUser.userReg.nombre" type="text" required name="nombre" placeholder="Nombre" />
+                    <input v-model="formUser.userReg.apellido" type="text" required name="apellido" placeholder="Apellido" />
                 </div>
-                <!-- <div>                    
-                    <input v-model="segundoNombre" type="text" name="2-nombre" placeholder="Segundo Nombre"/>
-                    <input v-model="segundoApellido" type="text" name="2-apellido" placeholder="Segundo Apellido" />
-                </div> -->
                 <div>
                     <input v-model="formUser.userReg.cedula" type="text" required name="cedula" placeholder="Cédula">
-                    <input v-model="formUser.userReg.telefono" type="number" required name="Teléfono" placeholder="4242196405">
+                    <input v-model="formUser.userReg.telf_1" type="number" required name="Teléfono" placeholder="4242196405">
                 </div>
                 <div>
                     <select v-model="formUser.role" @change="CambioRole">
@@ -24,25 +20,26 @@
                 </div>
             </div>            
             <div v-if="formUser.showCarrera">
-                <select v-model="formUser.userReg.career" name="" id="">
+                <select v-model="formUser.userReg.carrera" name="" id="">
                     <option v-for="carrera in formUser.carreras" v-bind:value="carrera" v-bind:key="carrera">{{ carrera }}</option>
                 </select>
             </div>
             <div v-else>
                 <input v-model="formUser.userReg.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
             </div>
-            <!-- <div >
-                <textarea v-model="direccion" type="text" placeholder="Dirección" name="direccion" /> 
-            </div> -->
             <div>
-                <button>
-                    Agregar Foto
-                </button>
+                <input type="file" accept="image/*" @change="pickFile2">
             </div>
-            <button @click="Registrar" type="submit">Registrar</button>
-            <router-link :to="{ name: 'Principal' }">
-                <button>Cancelar</button>
-            </router-link>        
+            <div id="preview">
+                <!-- <img :src="previewImage" /> -->
+                <img :src="url">
+            </div>
+            <div class="buttons-holder">
+                <button @click="Registrar" type="submit">Registrar</button>
+                <router-link :to="{ name: 'Principal' }">
+                    <button>Cancelar</button>
+                </router-link>
+            </div>        
         </form>
     </div>
 </template>
@@ -50,6 +47,7 @@
 <script lang="ts">
 import { defineComponent, onUpdated, ref, watch } from "@vue/runtime-core";
 import { userModel } from "../../modelo/modeloUser"
+import insertUser from "../../funciones/insertUser"
 
 export default defineComponent({
     name: 'Agregar',
@@ -68,11 +66,16 @@ export default defineComponent({
             nombre: '',
             apellido: '',
             cedula: null,
-            telefono: '',
+            telf_1: '',
             correo: '',
-            career: '',
-            especializacion: ''
+            carrera: '',
+            especializacion: '', 
+            foto: '',
+            id: '57'
         }
+
+        //let selectedFile : any
+        let url : any = ref()
 
         const formUser = ref({
             userReg,
@@ -95,6 +98,34 @@ export default defineComponent({
             ]
         })
 
+        let pickFile2 = (e : any) => {
+            console.log('Llama esta funcion pickfile');
+
+            if((/^image+/.test(e.target.files[0].type))){
+                console.log(e.target.files[0])
+                //let reader = new FileReader
+                var reader = new FileReader();
+
+                //console.log(reader);
+
+                reader.onload = e => {
+                    // El texto del archivo se mostrará por consola aquí
+                    let r = e?.target?.result
+                    if (r !== null || r!== undefined){
+                        url.value = r as string;
+                        formUser.value.userReg.foto = url.value
+                    }
+                    console.log('Evento:',e?.target?.result)
+                };
+
+                //reader.readAsText(e.target.files[0]);
+                reader.readAsDataURL(e.target.files[0]);
+            }
+            else {
+                url.value == null;
+            }
+        }
+        
         onUpdated(() => {
             console.log('updated Hook role ' + formUser.value.role + formUser.value.showCarrera)
             if (formUser.value.role == 'Estudiante') {
@@ -105,14 +136,65 @@ export default defineComponent({
             console.log('valor del nombre ' + formUser.value.userReg.nombre)
         })
 
+        let handleSubmit = () => {
+            const { error, insert } = insertUser(userReg)
+            insert()
+        }
+
+
         return {
-            formUser, CambioRole
+            formUser, CambioRole, url, pickFile2, handleSubmit
         }
     },
+    data() {
+        return {
+            previewImage : ''
+        };
+    },
     methods: {
-        Registrar() {
-            console.log('Registrar el usuario')
-        },
+
+        // pickFile (e : any) {
+        //     console.log('Llama esta funcion pickfile');
+
+        //     if((/^image+/.test(e.target.files[0].type))){
+        //         console.log(e.target.files[0])
+        //         //let reader = new FileReader
+        //         var reader = new FileReader();
+
+        //         //console.log(reader);
+
+        //         reader.onload = e => {
+        //             // El texto del archivo se mostrará por consola aquí
+        //             let r = e?.target?.result
+        //             if (r !== null || r!== undefined){
+        //                 this.previewImage = r as string;
+        //             }
+        //             console.log('Evento:',e?.target?.result)
+        //         };
+
+        //         //reader.readAsText(e.target.files[0]);
+        //         reader.readAsDataURL(e.target.files[0]);
+        //     }
+        //     else {
+        //         this.previewImage == null;
+        //     }
+        // }
+        // selectImage () {
+        //     this.$refs.fileInput.click()
+        // },
+        // pickFile () {
+        //     let input = this.$refs.fileInput
+        //     let file = input.files
+        //     if (file && file[0]) {
+        //     let reader = new FileReader
+        //     reader.onload = e => {
+        //         console.log('El target', e.target.result);
+        //         //this.previewImage = e.target.result
+        //     }
+        //     reader.readAsDataURL(file[0])
+        //     this.$emit('input', file[0])
+        //     }
+        // }
     }
 })
 </script>
@@ -140,6 +222,9 @@ export default defineComponent({
         font-size: 16px;
         grid-gap: 10px;
     } */
+    .buttons-holder {
+        text-align: center;
+    }
     label {
         color: #aaa;
         display: inline-block;
@@ -203,6 +288,9 @@ export default defineComponent({
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
+    }
+    img {
+        margin: auto;
     }
 
 </style>
