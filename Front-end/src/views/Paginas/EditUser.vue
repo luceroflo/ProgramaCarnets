@@ -1,45 +1,52 @@
 <template>
     <div class="add-contenedor">
         <form @submit.prevent="handleSubmit">
-            <div class="top-front">
-                <div>
-                    <input v-model="user.nombre" type="text" required name="nombre" placeholder="Nombre" />
-                    <input v-model="user.apellido" type="text" required name="apellido" placeholder="Apellido" />
-                </div>
-                <div>
-                    <input v-model="user.cedula" type="text" required name="cedula" placeholder="Cédula">
-                    <input v-model="user.telf_1" type="number" required name="Teléfono" placeholder="4242196405">
-                </div>
-                <div>
-                    <select v-model="formUser.role" @change="CambioRole">
-                        <option value="Estudiante">Estudiante</option>
-                        <option value="Docente">Docente</option>
-                        <option value="Personal">Personal</option>
+            <div v-if="showData">
+                <div class="top-front">
+                    <div>
+                        <input v-model="userM.nombre" type="text" required name="nombre" placeholder="Nombre" />
+                        <input v-model="userM.apellido" type="text" required name="apellido" placeholder="Apellido" />
+                    </div>
+                    <div>
+                        <input v-model="cedulaN" type="text" required name="cédula" placeholder="Cédula">
+                        <input v-model="userM.telf_1" type="number" required name="Teléfono" placeholder="4242196405">
+                    </div>
+                    <div>
+                        <select v-model="formUser.role" @change="CambioRole">
+                            <option value="Estudiante">Estudiante</option>
+                            <option value="Docente">Docente</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                        <input v-model="userM.correo" type="text" placeholder="Correo@gmail.com">               
+                    </div>
+                </div>            
+                <div v-if="formUser.showCarrera">
+                    <select v-model="userM.carrera" name="" id="">
+                        <option v-for="carrera in formUser.carreras" v-bind:value="carrera" v-bind:key="carrera">{{ carrera }}</option>
                     </select>
-                    <input v-model="user.correo" type="text" placeholder="Correo@gmail.com">               
                 </div>
-            </div>            
-            <div v-if="formUser.showCarrera">
-                <select v-model="user.carrera" name="" id="">
-                    <option v-for="carrera in formUser.carreras" v-bind:value="carrera" v-bind:key="carrera">{{ carrera }}</option>
-                </select>
-            </div>
+                <div v-else>
+                    <input v-model="userM.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
+                </div>
+                <div>
+                    <input type="file" accept="image/*" @change="pickFile2">
+                </div>
+                <div id="preview">
+                    <!-- <img :src="previewImage" /> -->
+                    <img :src="userM.foto">
+                </div>
+                <div class="buttons-holder">
+                    <button type="submit">Guardar</button>
+                    <router-link :to="{ name: 'Principal' }">
+                        <button>Cancelar</button>
+                    </router-link>
+                </div> 
+            </div>  
             <div v-else>
-                <input v-model="user.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
-            </div>
-            <div>
-                <input type="file" accept="image/*" @change="pickFile2">
-            </div>
-            <div id="preview">
-                <!-- <img :src="previewImage" /> -->
-                <img :src="user.foto">
-            </div>
-            <div class="buttons-holder">
-                <button @click="Registrar" type="submit">Guardar</button>
-                <router-link :to="{ name: 'Principal' }">
-                    <button>Cancelar</button>
-                </router-link>
-            </div>        
+                <div v-if="false">
+
+                </div>
+            </div>     
         </form>
     </div>
 </template>
@@ -49,7 +56,8 @@ import { onMounted } from "@vue/runtime-core";
 
 import { defineComponent, inject } from "@vue/runtime-core";
 import { ref } from "vue";
-import getUser from "../../funciones/getUser"
+import getUser from "../../funciones/getUser";
+import updateUser from "../../funciones/updateUser";
 import { userModel } from "../../modelo/modeloUser";
 
 export default defineComponent({
@@ -57,14 +65,18 @@ export default defineComponent({
     props: ['id'],
     setup(props) {
         
-        //const userData : any = inject('userData')
-        let { user, error, load, showData } = getUser(props.id)
-        console.log('console id ' + props.id)
+        //#region GET USER DATA FOR EDITION
+        let { user, userM, errorGet, load, showData } = getUser(props.id)
+        let cedulaN = ref<Number | null>()
+        let url : any = ref()
+        var userReturn : userModel | undefined | null;
 
         onMounted(() => {
-            load()
+            Promise.resolve(load()).then(() => {
+                userReturn = userM?.value;
+                cedulaN.value = userReturn?.cedula;
+            })
         })
-
         
         let CambioRole = (() => {
             console.log('updated Function role ' + formUser.value.role + formUser.value.showCarrera)
@@ -74,9 +86,6 @@ export default defineComponent({
                 formUser.value.showCarrera = false
             }
         })
-
-        //let selectedFile : any
-        let url : any = ref()
 
         const formUser = ref({
             showCarrera: true,
@@ -117,22 +126,34 @@ export default defineComponent({
                     }
                     console.log('Evento:',e?.target?.result)
                 };
-
-                //reader.readAsText(e.target.files[0]);
                 reader.readAsDataURL(e.target.files[0]);
             }
             else {
                 url.value == null;
             }
         }
+        //#endregion 
 
-        // let handleSubmit = () => {
-        //     const { error, insert } = updatetUser(userReg)
-        //     insert()
-        // }
+        //----------------------------------------------------------------------------------------
+
+        //#region 
+
+        let handleSubmit = () => {
+            //userM.value = user.value
+            userReturn = userM?.value;
+            if (userReturn !== undefined) {
+                userReturn.cedulaN = cedulaN.value;
+            }
+            let { error, update } = updateUser(userReturn)
+            //userReturn.cedulaN = cedulaN?.value
+            update()
+        }
+
+        //#endregion
 
         return {
-            CambioRole, pickFile2, formUser, user, url
+            CambioRole, pickFile2, formUser, user, url, showData, cedulaN,
+            handleSubmit, userM
         }
     }
 })

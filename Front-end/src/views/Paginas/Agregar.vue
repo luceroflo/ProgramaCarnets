@@ -71,7 +71,8 @@ export default defineComponent({
             carrera: '',
             especializacion: '', 
             foto: '',
-            id: '57'
+            id: '',
+            cedulaN: null
         }
 
         //let selectedFile : any

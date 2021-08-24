@@ -11,7 +11,8 @@ export interface userModel {
     carrera: String,
     especializacion: String,
     foto: String,
-    id: String
+    id: String,
+    cedulaN: Number | null | undefined
     
     //carreras: []
 }
