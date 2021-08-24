@@ -12,12 +12,26 @@ const getUserById = async (req, reply) => {
         if(res.rows[0] == null || res.rows[0] == undefined){
             return reply.send(JSON.stringify({}));
         }
-        return reply.send(JSON.stringify(res.rows[0]));
+        return reply.send(JSON.stringify(res.rows));
     }
    catch (e) {
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
    }
 }
+
+// const getUserByIdOld = async (req, reply) => {
+//     try {
+//         var res = await getUser(req.params.cedula);
+//         console.log(`Resultado del query ${res.rows}`);
+//         if(res.rows[0] == null || res.rows[0] == undefined){
+//             return reply.send(JSON.stringify({}));
+//         }
+//         return reply.send(JSON.stringify(res.rows[0]));
+//     }
+//    catch (e) {
+//         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
+//    }
+// }
 
 /**
  * 

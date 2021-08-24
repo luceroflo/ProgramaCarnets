@@ -29,7 +29,7 @@
                     <p>{{user.nombre}}</p>
                     <p>{{user.cedula}}</p>
                     <p>{{user.id}}</p>
-                    <router-link :to="{ name: 'EditUser' }">
+                    <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
                         <button>
                             editar
                         </button>
@@ -57,7 +57,7 @@ export default defineComponent({
     setup() {
 
         let { users, error, load, showData } = getUsers()
-        provide('userData', users)
+        //provide('userData', users)
 
         const search = ref('') 
         let names = ref(users)

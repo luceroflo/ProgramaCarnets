@@ -125,21 +125,21 @@ export default defineComponent({
                 url.value == null;
             }
         }
-        
-        onUpdated(() => {
-            console.log('updated Hook role ' + formUser.value.role + formUser.value.showCarrera)
-            if (formUser.value.role == 'Estudiante') {
-                formUser.value.showCarrera = true
-            } else {
-                formUser.value.showCarrera = false
-            }
-            console.log('valor del nombre ' + formUser.value.userReg.nombre)
-        })
 
         let handleSubmit = () => {
             const { error, insert } = insertUser(userReg)
             insert()
         }
+        
+        // onUpdated(() => {
+        //     console.log('updated Hook role ' + formUser.value.role + formUser.value.showCarrera)
+        //     if (formUser.value.role == 'Estudiante') {
+        //         formUser.value.showCarrera = true
+        //     } else {
+        //         formUser.value.showCarrera = false
+        //     }
+        //     console.log('valor del nombre ' + formUser.value.userReg.nombre)
+        // })
 
 
         return {

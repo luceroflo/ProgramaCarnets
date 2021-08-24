@@ -11,8 +11,6 @@ const getAdmin2 = (id: string) => {
     let admin = ref([])
     let dataValue = ref<boolean>(false)
 
-    // let dataString = 'EMPTY'
-
     const load = async () => {
         try {
 
