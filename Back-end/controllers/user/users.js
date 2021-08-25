@@ -1,4 +1,4 @@
-const {getUser, insertaUser, getAllUsers, actualizaUser } = require('./queries');
+const {getUser, insertaUser, getAllUsers, actualizaUser, filterUserQuery } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -72,9 +72,26 @@ const updateUser = async (req, reply) => {
         reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
     }
 }
+
+const filterUser = async (req, reply) => {
+    try{
+        if(req.query === null || req.query === undefined || req.query === {}){
+            return reply.code(204).send(`No hay data en el query param`);
+        }
+
+        var res = await filterUserQuery(req.query) 
+
+        reply.send(JSON.stringify(res.rows));
+
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`);
+    }
+}
 module.exports = {
     getUserById,
     insertUser,
     getAllUsersC,
-    updateUser
+    updateUser,
+    filterUser
 }

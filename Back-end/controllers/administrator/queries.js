@@ -15,9 +15,9 @@ const insertaAdmin = async (username, password, nombre, apellido, correo, telf_1
                                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [username, password, nombre, apellido, correo, telf_1, telf_2, cedula]);
 }
 
-const actualizaAdmin = async () => {
-    return rows = await pg.query(`INSERT INTO sglbtr a.id_unico, a.fe_regist, a.msgid_orgnl,
-                                    FROM sglbtr.transferencia_enviada a limit 100`);
+const actualizaAdmin = async (admin) => {
+    return rows = await pg.query(`UPDATE carnet.tb_admin set username = $7, nombre = $2, apellido = $3,
+                                  correo = $4, telf_1 = $5, cedula = $6 WHERE username = $1`, [admin.username, admin.nombre, admin.apellido, admin.correo, admin.telf_1, admin.cedula, admin.usernameN]);
 }
 
 const loginAdmin = async (username, password) => {

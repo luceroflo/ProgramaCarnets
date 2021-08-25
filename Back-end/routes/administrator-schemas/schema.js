@@ -1,4 +1,4 @@
-const { getAdministrator, insertAdministrator, loginAdministrator, logoutAdministrator, isAdminLogged } = require('../../controllers/administrator/administrator');
+const { getAdministrator, insertAdministrator, loginAdministrator, logoutAdministrator, isAdminLogged, updateAdmin } = require('../../controllers/administrator/administrator');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -66,7 +66,7 @@ const bodyRegistrarJsonSchema = {
     type: 'object',
     required: ['username', 'nombre', 'apellido', 'password', 'telf_1', 'correo', 'cedula'],
     properties: {
-      username: { type: 'string', maxLength: 20 },
+      username: { type: 'string', minLength: 5, maxLength: 20 },
       nombre: { type: 'string', maxLength: 30 },
       apellido: { type: 'string', maxLength: 30 },
       password: { type: 'string', maxLength: 20 },
@@ -77,6 +77,20 @@ const bodyRegistrarJsonSchema = {
     }
   }
 
+  const bodyActualizarJsonSchema = {
+    type: 'object',
+    required: ['username', 'nombre', 'apellido', 'telf_1', 'correo', 'cedula', 'usernameN'],
+    properties: {
+      username: { type: 'string', minLength: 5, maxLength: 20 },
+      nombre: { type: 'string', maxLength: 30 },
+      apellido: { type: 'string', maxLength: 30 },
+      telf_1 : { type: 'string', maxLength: 11 },
+      correo : { type: 'string', maxLength: 50},
+      cedula : { type: 'number'},
+      telf_2 : { type: 'string', maxLength: 11, nullable : true }, // or { type: 'number', nullable: true }
+      usernameN : { type: 'string', minLength: 5, maxLength: 20}
+    }
+  }
 const registrarAdminSchema = {
     schema: {
         body : bodyRegistrarJsonSchema
@@ -86,11 +100,19 @@ const registrarAdminSchema = {
 const registrarAdminSchemaResponse = {
     handler : insertAdministrator
 }
+
+const actualizaAdminSchema = {
+    schema : {
+        body : bodyActualizarJsonSchema
+    },
+    handler : updateAdmin
+}
 module.exports = {
     getAdministratorSchema,
     registrarAdminSchema,
     registrarAdminSchemaResponse,
     loginAdminSchema,
     logoutAdminSchema,
-    isLoggedSchema
+    isLoggedSchema,
+    actualizaAdminSchema
 }

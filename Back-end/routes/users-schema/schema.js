@@ -1,4 +1,4 @@
-const { getUserById, insertUser, getAllUsersC, updateUser } = require('../../controllers/user/users');
+const { getUserById, insertUser, getAllUsersC, updateUser, filterUser } = require('../../controllers/user/users');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -30,7 +30,7 @@ const getAllUserSchema = {
         response: {
             200: {
                 schema: {
-                    type: 'object',
+                    type: 'array',
                     properties: {
                         username : {type : 'string'},
                         nombre : { type : 'string'},
@@ -47,6 +47,11 @@ const getAllUserSchema = {
         }
     },
     handler: getAllUsersC
+}
+
+const filterUserSchema = {
+    schema : getAllUserSchema.schema,
+    handler: filterUser
 }
 
 const bodyRegistrarJsonSchema = {
@@ -95,6 +100,7 @@ const registrarUserSchemaResponse = {
     handler : insertUser
 }
 module.exports = {
+    filterUserSchema,
     getUserSchema,
     registrarUserSchema,
     registrarUserSchemaResponse,

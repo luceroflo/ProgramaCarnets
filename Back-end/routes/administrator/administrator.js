@@ -1,4 +1,4 @@
-const { getAdministratorSchema, registrarAdminSchema, loginAdminSchema, logoutAdminSchema, isLoggedSchema } = require('../administrator-schemas/schema');
+const { getAdministratorSchema, registrarAdminSchema, loginAdminSchema, logoutAdminSchema, isLoggedSchema, actualizaAdminSchema } = require('../administrator-schemas/schema');
 const { insertAdministrator } = require('../../controllers/administrator/administrator');
 
 function transactionRoutes(fastify, options, done) {
@@ -26,12 +26,17 @@ function transactionRoutes(fastify, options, done) {
      /**
       * @param body {logoutAdminSchema}
       */
-     fastify.get('administrator/logout/:username', logoutAdminSchema)
+     fastify.get('/administrator/logout/:username', logoutAdminSchema)
 
      /**
       * @param body {}
       */
-     fastify.get('administrator/checkout/:username', isLoggedSchema)
+     fastify.get('/administrator/checkout/:username', isLoggedSchema)
+
+     /**
+      * @param body {actualizaAdminSchema}
+      */
+     fastify.post('/administrator/update', actualizaAdminSchema)
     
     done();
 

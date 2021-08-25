@@ -1,5 +1,5 @@
-const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('../controllers/administrator/queries');
-const { getUser, insertaUser, getAllUsers, actualizaUser } = require('../controllers/user/queries');
+const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin } = require('../controllers/administrator/queries');
+const { getUser, insertaUser, getAllUsers, actualizaUser, filterUserQuery  } = require('../controllers/user/queries');
 
 const faker = require('faker');
 
@@ -73,6 +73,29 @@ describe('Test report transaction queries', () => {
 
         expect(rows.rows.length).toBe(0);
 
+    })
+
+    it('Deberia traer con filtro', async() => {
+        let query = {nombre : 'luca'}
+        let rows = await filterUserQuery(query);
+
+        expect(rows.rows.length).toBe(0);
+    })
+
+    it ('Deberia actualizar admin', async() => {
+        let json = {
+            username : "Emmitt.Witting",
+            nombre: "asdadddd",
+            apellido: "sfsdfsdfsdf",
+            telf_1 : "23423422",
+            correo: "oscar123@gmail.com",
+            cedula: "12345",
+            usernameN : "rosito"    
+        }  
+
+        let rows = await actualizaAdmin(json);
+
+        expect(rows.rows.length).toBe(0);
     })
 })
 

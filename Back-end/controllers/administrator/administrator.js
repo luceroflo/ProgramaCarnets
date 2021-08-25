@@ -1,4 +1,4 @@
-const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged } = require('./queries');
+const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -65,10 +65,22 @@ const isAdminLogged = async (req, reply) => {
     }
 }
 
+const updateAdmin = async (req, reply) => {
+    try{
+        var res = await actualizaAdmin(req.body);
+        console.log(res.rows)
+        reply.send("Actualizacion exitosa");
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`)
+    }
+}
+
 module.exports = {
     getAdministrator,
     insertAdministrator,
     loginAdministrator,
     logoutAdministrator,
-    isAdminLogged
+    isAdminLogged,
+    updateAdmin
 }
