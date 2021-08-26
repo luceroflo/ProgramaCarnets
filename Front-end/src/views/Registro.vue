@@ -128,6 +128,7 @@ export default defineComponent({
             //codigo: '',
             password: '123456789',
             co_password: '123456789',
+            usernameN: null
             // //VALIDACIONES
             // usuarioError: '',
             // passwordError: '',

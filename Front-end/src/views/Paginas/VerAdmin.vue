@@ -1,24 +1,25 @@
 <template>
       <div class="add-contenedor">
-        <form>
+        <form @submit.prevent="handleSubmit">
             <div v-if="dataValue" class="top-front">
-                <div>
-                    <input v-model="admin.nombre" type="text" required name="nombre" placeholder="nombre" />
-                    <input v-model="admin.apellido" type="text" required name="apellido" placeholder="apellido" />
+                <div class="inside">
+                    <input v-model="adminM.nombre" type="text" required name="nombre" placeholder="nombre" />
+                    <input v-model="adminM.apellido" type="text" required name="apellido" placeholder="apellido" />
                 </div>
-                <div>
-                    <input  v-model="admin.username" type="text" class="usuario" required name="usuario" placeholder="username">                    
-                    <input v-model="admin.cedula" type="text" required name="cedula" placeholder="cedula">
+                <div class="inside">
+                    <input  v-model="adminM.usernameN" type="text" class="usuario" required name="usuario" placeholder="username">                    
+                    <input v-model="adminM.cedula" type="text" required name="cedula" placeholder="cedula">
                 </div>
-                <div>
-                    <input v-model="admin.telf_1" type="text" required name="Teléfono" placeholder="relefono">
-                    <input v-model="admin.correo" type="text" placeholder="correo">               
+                <div class="inside">
+                    <input v-model="adminM.telf_1" type="text" required name="Teléfono" placeholder="telefono">
+                    <input v-model="adminM.correo" type="text" placeholder="correo">               
                 </div>
-                <div>
-                    <button @click="Registrar" type="submit">Guardar</button>
+                <div class="buttons">
+                    <button type="submit">Guardar</button>
                     <router-link :to="{ name: 'Principal' }">
                         <button>Cancelar</button>
                     </router-link>  
+                    <button>Cambiar contraseña</button>
                 </div>                  
             </div> 
             <div class="loading" v-else>
@@ -31,19 +32,20 @@
 <script lang="ts">
 
 import { defineComponent, inject, onMounted, onUpdated, ref, watch } from "@vue/runtime-core";
-import getAdmin from "../../funciones/getAdmin"
+import updateAdmin from "../../funciones/updateAdmin"
 import getAdmin2 from "../../funciones/getAdmin2"
 import { adminModel } from "../../modelo/modeloAdmin"
-
-//Falta el POST de la data para el UPDATE
 
 export default defineComponent({
     name: 'VerAdmin',
     // props: ['id'],
     setup() {
         const userLoged : any = inject('userLoged')
+        let usernameN = ref<String | null>()
         //userLoged.value.username = 'Garfield73'
-        let { admin, error, load, dataValue } = getAdmin2(userLoged.value.user)
+        let { admin, error, load, adminM, dataValue } = getAdmin2(userLoged.value.user)
+        var adminReturn : adminModel | undefined | null;
+
                 
         onMounted(() => {
             console.log(admin.value)
@@ -56,8 +58,23 @@ export default defineComponent({
             console.log('show value updated ' + dataValue.value)
         })
 
+
+
+        let handleSubmit = () => {
+            adminReturn = adminM?.value;
+            if (adminReturn !== undefined) {
+                // adminReturn.usernameN = adminM?.value.username
+                //adminReturn.usernameN = usernameN.value;
+                console.log('Çontent: ', adminReturn)
+            }
+            let { error, update } = updateAdmin(adminReturn)
+            //adminReturn.cedulaN = cedulaN?.value
+            update()
+        }
+
+
         return {
-            error, admin, dataValue
+            error, admin, dataValue, adminM, handleSubmit
         }
     }
 })
@@ -146,13 +163,23 @@ export default defineComponent({
     textarea {
         width: 100%;
     }
-    .top-front div {
+    .top-front .inside {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
     .loading {
         margin-top: 30px;
+    }
+    .buttons { 
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    a {
+        margin: auto;
+    }
+    button {
+        margin: auto;
     }
 
 </style>

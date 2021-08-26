@@ -1,12 +1,12 @@
 import { ref } from "@vue/reactivity";
 import axios from "axios";
-import { BIconListTask } from "bootstrap-vue";
 import { adminModel } from "../modelo/modeloAdmin";
 
 
 const getAdmin2 = (id: string) => {
     const error = ref(null);
     let dataString = ref([])
+    let adminM = ref<adminModel>();
     let jsonString = '';
     let admin = ref([])
     let dataValue = ref<boolean>(false)
@@ -23,6 +23,11 @@ const getAdmin2 = (id: string) => {
             admin.value = JSON.parse(jsonString)
             console.log('GET METHOD RESULT AFTER:', admin)
             dataValue.value = true
+            adminM.value = JSON.parse(JSON.stringify(dataString.value[0]))
+            if (adminM.value !== undefined) { 
+                adminM.value.usernameN = adminM?.value?.username
+            }
+            console.log('GET METHOD RESULT: ' , adminM?.value)
             //console.log('data value ' + dataValue.value)
         }
         catch(err) {
@@ -30,7 +35,7 @@ const getAdmin2 = (id: string) => {
              console.log(error.value)
         }
     }
-    return { admin, error, dataValue, load }
+    return { admin, error, dataValue, adminM, load }
 }
 
 export default getAdmin2

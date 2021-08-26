@@ -7,5 +7,6 @@ export interface adminModel {
     telf_1: String,
     telf_2: String,
     password: String,
-    co_password: String
+    co_password: String,
+    usernameN: String | null | undefined
 }
