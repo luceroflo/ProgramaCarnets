@@ -34,21 +34,20 @@ const actualizaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, 
 const filterUserQuery = async (req) => {
 
     var query;
-    req.nombre == undefined || req.nombre == null ? '' : query = `WHERE t.nombre LIKE '%${req.nombre}%'`
-    req.apellido == undefined || req.apellido == null ? '' : query = `WHERE t.apellido LIKE '%${req.apellido}%'`
-    req.cedula == undefined || req.cedula == null ? '' : query = `WHERE t.cedula LIKE '%${req.cedula}%'`
-    req.telf_1 == undefined || req.telf_1 == null ? '' : query = `WHERE t.telf_1 LIKE '%${req.telf_1}%'`
-    req.correo == undefined || req.correo == null ? '' : query = `WHERE t.correo LIKE '%${req.correo}%'`
-    req.carrera == undefined || req.carrera == null ? '' : query = `WHERE t.carrera LIKE '%${req.carrera}%'`
-    req.cedula == undefined || req.cedula == null ? '' : query = `WHERE t.cedula LIKE '%${req.cedula}%'`
+    req.nombre == undefined || req.nombre == null ? query = null : query = `WHERE t.nombre LIKE '%${req.nombre}%'`
+    req.apellido == undefined || req.apellido == null ? query = null : query = `WHERE t.apellido LIKE '%${req.apellido}%'`
+    req.cedula == undefined || req.cedula == null ? query = null : query = `WHERE t.cedula LIKE '%${req.cedula}%'`
+    req.telf_1 == undefined || req.telf_1 == null ? query = null : query = `WHERE t.telf_1 LIKE '%${req.telf_1}%'`
+    req.correo == undefined || req.correo == null ? query = null : query = `WHERE t.correo LIKE '%${req.correo}%'`
+    req.carrera == undefined || req.carrera == null ? query = null : query = `WHERE t.carrera LIKE '%${req.carrera}%'`
+    req.cedula == undefined || req.cedula == null ? query = null : query = `WHERE t.cedula LIKE '%${req.cedula}%'`
 
     console.log(query);
 
     if (query === undefined || query === null) return rows = await [{}];
 
     return rows = await pg.query(`SELECT t.nombre, t.apellido, t.correo, t.telf_1, t.id, t.cedula, t.foto FROM carnet.tb_usuario t
-                                    ${query} 
-                                `)
+                                    ${query} `)
 }
 /*Exportar los modulos paera que puedan ser utilizados en cualquier parte de la estructura*/
 module.exports = {
