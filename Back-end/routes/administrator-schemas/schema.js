@@ -1,4 +1,4 @@
-const { getAdministrator, insertAdministrator, loginAdministrator, logoutAdministrator, isAdminLogged, updateAdmin } = require('../../controllers/administrator/administrator');
+const { getAdministrator, insertAdministrator, loginAdministrator, logoutAdministrator, isAdminLogged, updateAdmin, deleteUser } = require('../../controllers/administrator/administrator');
 
 /*Define un esquema para el json de respuesta con el codigo
 Asigna un handler para la operacion*/
@@ -39,6 +39,18 @@ const loginAdminSchema = {
     handler: loginAdministrator
 }
 
+const deleteUserSchema = {
+    schema: {
+        body:{
+            type: 'object',
+            required : ['cedula'],
+            properties : {
+                cedula : { type: 'string'} 
+            }
+        }
+    },
+    handler: deleteUser
+}
 const logoutAdminSchema = {
     schema: {
         response: {
@@ -114,5 +126,6 @@ module.exports = {
     loginAdminSchema,
     logoutAdminSchema,
     isLoggedSchema,
-    actualizaAdminSchema
+    actualizaAdminSchema,
+    deleteUserSchema
 }

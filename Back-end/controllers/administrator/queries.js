@@ -40,6 +40,9 @@ const borraAdmin = async () => {
                                     FROM sglbtr.transferencia_enviada a limit 100`);
 }
 
+const borraUser = async (cedula) => {
+    return rows = await pg.query(`DELETE FROM carnet.tb_usuario WHERE cedula = $1`, [cedula]);
+}
 /*Exportar los modulos paera que puedan ser utilizados en cualquier parte de la estructura*/
 module.exports = {
     insertaAdmin,
@@ -48,5 +51,6 @@ module.exports = {
     getAdmin,
     loginAdmin,
     logoutAdmin,
-    isLogged
+    isLogged,
+    borraUser
 }
