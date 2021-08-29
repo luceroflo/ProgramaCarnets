@@ -32,7 +32,7 @@ const actualizaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, 
 }
 
 const filterUserQuery = async (req) => {
-
+    console.log('Req', req)
     var query;
     req.nombre == undefined || req.nombre == null ? query = null : query = `WHERE t.nombre LIKE '%${req.nombre}%'`
     req.apellido == undefined || req.apellido == null ? query = null : query = `WHERE t.apellido LIKE '%${req.apellido}%'`
@@ -42,9 +42,9 @@ const filterUserQuery = async (req) => {
     req.carrera == undefined || req.carrera == null ? query = null : query = `WHERE t.carrera LIKE '%${req.carrera}%'`
     req.cedula == undefined || req.cedula == null ? query = null : query = `WHERE t.cedula LIKE '%${req.cedula}%'`
 
-    console.log(query);
+    console.log('FilterQuery',query);
 
-    if (query === undefined || query === null) return rows = await [{}];
+    if (query === undefined || query === null) return rows = {rows:[]};
 
     return rows = await pg.query(`SELECT t.nombre, t.apellido, t.correo, t.telf_1, t.id, t.cedula, t.foto FROM carnet.tb_usuario t
                                     ${query} `)

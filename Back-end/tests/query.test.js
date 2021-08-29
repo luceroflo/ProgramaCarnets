@@ -1,4 +1,4 @@
-const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin } = require('../controllers/administrator/queries');
+const { getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin, borraUser } = require('../controllers/administrator/queries');
 const { getUser, insertaUser, getAllUsers, actualizaUser, filterUserQuery  } = require('../controllers/user/queries');
 
 const faker = require('faker');
@@ -96,6 +96,11 @@ describe('Test report transaction queries', () => {
         let rows = await actualizaAdmin(json);
 
         expect(rows.rows.length).toBe(0);
+    })
+
+    it('Deberia borrar user', async() => {
+        let rows = await borraUser('56450260');
+        console.log(rows.rows);
     })
 })
 

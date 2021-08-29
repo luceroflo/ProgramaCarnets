@@ -1,4 +1,4 @@
-const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin } = require('./queries');
+const {getAdmin, insertaAdmin, loginAdmin, logoutAdmin, isLogged, actualizaAdmin, borraUser } = require('./queries');
 
 /**
  * Returns multiple sent transactions
@@ -76,11 +76,22 @@ const updateAdmin = async (req, reply) => {
     }
 }
 
+const deleteUser = async (req, reply) => {
+    try{
+        var res = await borraUser(req.body.cedula);
+        console.log(res.rows)
+        reply.send("Borrado exitoso");
+    }
+    catch(e){
+        reply.code(500).send(`ERROR => Excepcion ejecutando query ${e}`)
+    }
+}
 module.exports = {
     getAdministrator,
     insertAdministrator,
     loginAdministrator,
     logoutAdministrator,
     isAdminLogged,
-    updateAdmin
+    updateAdmin,
+    deleteUser
 }
