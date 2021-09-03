@@ -1,26 +1,37 @@
 <template>
-<div class="card">
-    <div class="card__inner">
-        <div class="card__face card__face--front">
-            <div class="card__content">
-                <div class="card__header">
-                    <h2>UNESR</h2>
+<div>
+  <router-link :to="{ name: 'Ver' }">
+    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Atras</button>
+  </router-link>
+  <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2" @click="makePDF">Generar PDF</button>
+  <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Editar</button>
+  </router-link>
+</div>
+<div  id="carnet">
+  <div class="card">
+      <div class="card__inner">
+          <div class="card__face card__face--front">
+              <div class="card__content">
+                  <div class="card__header">
+                      <h2>UNESR</h2>
 
-                    <img  :src="user.foto" alt="" class="pp" />
-                    <h2 class="font-sans italic text-base text-white">{{user.nombre}} {{user.apellido}}</h2>
-                </div>
-                <div class="card__info p-5">
-                    <h3>{{user.role}}</h3>
-                    <strong> <p> {{user.cedula}}</p> </strong>
-                    <p></p>
-                    <strong>{{user.carrera}}</strong> 
-                </div>
-                <div class="card__body">
-                    <!-- <strong>lacinia</strong> quis sapien placerat, <strong>laoreet</strong> tincidunt nulla.</p> -->
-                </div>
-            </div>
-        </div>
-    </div>
+                      <img  :src="user.foto" alt="" class="pp" />
+                      <h2 class="font-sans italic text-base text-white">{{user.nombre}} {{user.apellido}}</h2>
+                  </div>
+                  <div class="card__info p-5">
+                      <h3>{{user.role}}</h3>
+                      <strong> <p>C.I: {{user.cedula}}</p> </strong>
+                      <p></p>
+                      <strong>Carrera: {{user.carrera}}</strong> 
+                  </div>
+                  <div class="card__body">
+                      <!-- <strong>lacinia</strong> quis sapien placerat, <strong>laoreet</strong> tincidunt nulla.</p> -->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 </template>
 
@@ -29,10 +40,15 @@ import { defineComponent } from "@vue/runtime-core";
 import { onMounted, ref } from "vue";
 import getUser from "../../funciones/getUser";
 import { userModel } from "../../modelo/modeloUser";
+import { jsPDF } from 'jspdf';
+import html2canvas from "html2canvas";
+
+
 
 export default defineComponent({
     name: 'Carnet',
     props: ['id'],
+    
     setup(props) {
 
         let { user, userM, errorGet, load, showData } = getUser(props.id)
@@ -47,8 +63,27 @@ export default defineComponent({
             })
         })
 
+        let makePDF = () => {
+          var data = document.getElementById('carnet');  //Id of the table
+          if (data !== null) {
+            html2canvas(data).then(canvas => {  
+              // Few necessary setting options  
+              let imgWidth = 208;   
+              let pageHeight = 295;    
+              let imgHeight = canvas.height * imgWidth / canvas.width;  
+              let heightLeft = imgHeight;  
+
+              const contentDataURL = canvas.toDataURL('image/png')  
+              let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+              let position = 10;  
+              pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+              pdf.save('MYPdf.pdf'); // Generated PDF   
+            });
+          }
+        }
+
         return {
-            url, user, userM, showData
+            url, user, userM, showData, makePDF
         }
     }
 })
@@ -74,6 +109,11 @@ body {
   background-image: url(https://image.freepik.com/vector-gratis/fondo-luces-puntuales_52683-43735.jpg); 
 }
 
+#carnet {
+  margin: auto;
+    margin-top: -70px;
+}
+
 .card {
   margin: 100px auto 0;
   width: 400px;
@@ -87,7 +127,7 @@ body {
   height: 100%;
   transition: transform 1s;
   transform-style: preserve-3d;
-  cursor: pointer;
+  /* cursor: pointer; */
   position: relative;
 }
 
@@ -150,8 +190,8 @@ body {
 
 .pp {
   display: block;
-  width: 128px;
-  height: 128px;
+  width: 168px;
+  height: 168px;
   margin: 0 auto 30px;
   border-radius: 50%;
   background-color: #FFF;
@@ -169,7 +209,8 @@ body {
 
 .card__body {
   padding: 30px;
-  background-image: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png); 
+  background: #01519d;
+  /* background: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png);  */
 text-align: center;
 image-resolution: 100px;
 height: inherit;

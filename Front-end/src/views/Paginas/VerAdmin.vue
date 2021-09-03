@@ -15,11 +15,11 @@
                     <input v-model="adminM.correo" type="text" placeholder="correo">               
                 </div>
                 <div class="buttons">
-                    <button type="submit">Guardar</button>
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" type="submit">Guardar</button>
                     <router-link :to="{ name: 'Principal' }">
-                        <button>Cancelar</button>
+                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Cancelar</button>
                     </router-link>  
-                    <button>Cambiar contraseña</button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Cambiar clave</button>
                 </div>                  
             </div> 
             <div class="loading" v-else>

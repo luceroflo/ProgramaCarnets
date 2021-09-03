@@ -1,5 +1,9 @@
 <template>
-
+<div class="atras">
+  <router-link :to="{ name: 'Principal' }">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Regresar</button>
+  </router-link>
+</div>
     <div class="">
         <div class="filter-menu">
             <h4 class="text-4xl italic text-white">Usarios Registrados</h4>
@@ -28,7 +32,7 @@
             </div>
             <div v-if="showData">
                 <div v-for="user in datosPagineados"  v-bind:value="user" v-bind:key="user">
-                    <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
+                    <router-link :to="{ name: 'Carnet' , params: { id: user.cedula } }">
                         <div class="content-data p-3">
                             <p>{{user.nombre}}</p>
                             <p>{{user.apellido}}</p>
@@ -268,6 +272,11 @@ export default defineComponent({
 
 .filter-menu label {
     color: white;
+}
+.atras {
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .filter-menu {
