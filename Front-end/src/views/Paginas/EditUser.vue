@@ -3,15 +3,15 @@
         <form @submit.prevent="handleSubmit">
             <div v-if="showData">
                 <div class="top-front">
-                    <div>
+                    <div class="inside">
                         <input v-model="userM.nombre" type="text" required name="nombre" placeholder="Nombre" />
                         <input v-model="userM.apellido" type="text" required name="apellido" placeholder="Apellido" />
                     </div>
-                    <div>
+                    <div class="inside">
                         <input v-model="cedulaN" type="text" required name="cédula" placeholder="Cédula">
                         <input v-model="userM.telf_1" type="number" required name="Teléfono" placeholder="4242196405">
                     </div>
-                    <div>
+                    <div class="inside">
                         <select v-model="formUser.role" @change="CambioRole">
                             <option value="Estudiante">Estudiante</option>
                             <option value="Docente">Docente</option>

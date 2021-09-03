@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/global.css'
+import './index.css'
+
 // import  Vue  from 'vue'
 // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
