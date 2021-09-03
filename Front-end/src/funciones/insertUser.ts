@@ -21,7 +21,7 @@ const insertUser = (content: userModel) => {
         .then((json) => console.log(json))
         .catch(error => console.log(error))
       }
-      catch(err) {
+      catch(err: any) {
         error.value = err.message
         console.log(error.value)
       }

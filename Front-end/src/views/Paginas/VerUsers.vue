@@ -4,130 +4,103 @@
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Regresar</button>
   </router-link>
 </div>
-    <div class="">
-        <div class="filter-menu">
-            <h4 class="text-4xl italic text-white">Usarios Registrados</h4>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="font-mono text-base" for="">Filtrar por tipo:</label>
-                    <select name="tipo" id="" class="h-8">
-                        <option value="Estudiante">Estudiante</option>
-                        <option value="Docente">Docente</option>
-                        <option value="Personal">Personal</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="font-mono text-base" for="">Buscar</label>
-                    <input type="text" placeholder="Buscar..." v-model="searchQuery" />
-                    <!-- <input v-model="search" type="text" class="h-8" /> -->
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="cabecera-data p-3">
-                <label class="font-mono text-black text-sm" for="Editar">Nombre</label>
-                <label class="font-mono text-black text-sm" for="usuario">Apellido</label>
-                <label class="font-mono text-black text-sm" for="cedula">Cédula</label>
-                <label class="font-mono text-black text-sm" for="Carrera">Carrera</label>
-                <label class="font-mono text-black text-sm" for="Eliminar">Eliminar</label>
-            </div>
-            <div v-if="showData">
-                <div v-for="user in datosPagineados"  v-bind:value="user" v-bind:key="user">
-                    <router-link :to="{ name: 'Carnet' , params: { id: user.cedula } }">
-                        <div class="content-data p-3">
-                            <p>{{user.nombre}}</p>
-                            <p>{{user.apellido}}</p>
-                            <p>{{user.cedula}}</p>
-                            <p>{{user.carrera}}</p>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-12 h-10 rounded-full" @click="deleteAction()">
-                                eliminar
-                            </button>
-                        </div>
-                    </router-link> 
-                </div>                
-            </div>
-            <!-- <div v-if="showData" class="content-data">
-                <div v-for="user in listaUsers"  v-bind:value="user" v-bind:key="user">
-                    <p>{{user.nombre}}</p>
-                    <p>{{user.cedula}}</p>
-                    <p>{{user.id}}</p>
-                    <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
-                        <button>
-                            editar
-                        </button>
-                    </router-link>
-                    <button class="delete">eliminar</button>
-                </div>
-            </div> -->
-            <div class="loading" v-else>
-                Cargando la data ...
+<div class="">
+    <div class="filter-menu">
+        <h4 class="text-4xl italic text-white">Usarios Registrados</h4>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="font-mono text-base" for="">Filtrar por tipo:</label>
+                <select name="tipo" id="" class="h-8">
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Docente">Docente</option>
+                    <option value="Personal">Personal</option>
+                </select>
             </div>
             <div>
-               
-
-
-
-
- <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-    <div class="flex-1 flex justify-between sm:hidden">
-      <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        Previous
-      </a>
-      <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        Next
-      </a>
-    </div>
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-      <div>
-        <p class="text-sm text-gray-700">
-          Mostrando
-          {{ ' ' }}
-          <span class="font-medium">1</span>
-          {{ ' ' }}
-          hasta
-          {{ ' ' }}
-          <span class="font-medium">10</span>
-          {{ ' ' }}
-          de
-          {{ ' ' }}
-          <span class="font-medium">{{pagination.total}}</span>
-          {{ ' ' }}
-          resultados
-        </p>
-      </div>
-      <div>
-        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <a v-on:click="getPrevoiusPage()" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium cursor-pointer text-gray-500 hover:bg-gray-50">
-            <span class="sr-only">Anterior</span>
-            <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
-          </a>
-          <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
-          <!-- <a aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-            1
-          </a> -->
-          <span v-for="pagina in TotalPaginas()" v-on:click="getDataPagina(pagina, false)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-            {{pagina}}
-          </span>
-          <!-- <a class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-            10
-          </a> -->
-          <a v-on:click="getNextPage()" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointerhover:bg-gray-50">
-            <span class="sr-only">Siguiente</span>
-            <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
-          </a>
-        </nav>
-      </div>
-    </div>
-  </div>
-
-
-
-
-
+                <label class="font-mono text-base" for="">Buscar</label>
+                <input type="text" placeholder="Buscar..." v-model="searchQuery" />
             </div>
         </div>
     </div>
-  
+    <div>
+        <div class="cabecera-data p-3">
+            <label class="font-mono text-black text-sm" for="Editar">Nombre</label>
+            <label class="font-mono text-black text-sm" for="usuario">Apellido</label>
+            <label class="font-mono text-black text-sm" for="cedula">Cédula</label>
+            <label class="font-mono text-black text-sm" for="Carrera">Carrera</label>
+            <label class="font-mono text-black text-sm" for="Eliminar">Eliminar</label>
+        </div>
+        <div v-if="showData">
+            <div v-for="user in datosPagineados"  v-bind:value="user" v-bind:key="user">
+                <router-link :to="{ name: 'Carnet' , params: { id: user.cedula } }">
+                    <div class="content-data p-3">
+                        <p>{{user.nombre}}</p>
+                        <p>{{user.apellido}}</p>
+                        <p>{{user.cedula}}</p>
+                        <p>{{user.carrera}}</p>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-12 h-10 rounded-full" @click="deleteAction()">
+                            eliminar
+                        </button>
+                    </div>
+                </router-link> 
+            </div>                
+        </div>
+        <div class="loading" v-else>
+            Cargando la data ...
+        </div>
+        <div>
+            <div class="flex-1 flex justify-between sm:hidden">
+            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Previous
+            </a>
+            <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Next
+            </a>
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                    Mostrando
+                    {{ ' ' }}
+                    <span class="font-medium">1</span>
+                    {{ ' ' }}
+                    hasta
+                    {{ ' ' }}
+                    <span class="font-medium">10</span>
+                    {{ ' ' }}
+                    de
+                    {{ ' ' }}
+                    <span class="font-medium">{{pagination.total}}</span>
+                    {{ ' ' }}
+                    resultados
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <a v-on:click="getPrevoiusPage()" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium cursor-pointer text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">Anterior</span>
+                        <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
+                    </a>
+                    <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
+                    <!-- <a aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                        1
+                    </a> -->
+                    <span v-for="pagina in TotalPaginas()" v-on:click="getDataPagina(pagina, false)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                        {{pagina}}
+                    </span>
+                    <!-- <a class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                        10
+                    </a> -->
+                    <a v-on:click="getNextPage()" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointerhover:bg-gray-50">
+                        <span class="sr-only">Siguiente</span>
+                        <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
+                    </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>  
 </template>
 
 <script lang="ts">
@@ -137,10 +110,6 @@ import { computed, provide, ref, unref, watch } from "vue";
 import getUsers from "../../funciones/getUsers"
 import { userModel } from "../../modelo/modeloUser";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
-
-// import '@ocrv/vue-tailwind-pagination/styles'
-// import VueTailwindPagination from '@ocrv/vue-tailwind-pagination'
-
 
 export default defineComponent({
     name: 'Ver',

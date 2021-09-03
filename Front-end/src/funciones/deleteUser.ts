@@ -1,33 +1,35 @@
 import { ref } from "@vue/reactivity";
 import axios from "axios";
-import { adminModel } from "../modelo/modeloAdmin";
 
-
-const getAdmin = (id: string) => {
+const deleteUser = (id: string) => {
     const error = ref(null);
+    let contenido = {
+        cedula: id
+    };
+    if (id != null) {
+        contenido.cedula = id.toString();
+    }
 
-    let dataString = ''
-
-    const load = async () => {
+    const eliminar = async () => {
         try {
-            let data = await axios.get('http://localhost:3000/api/v1/delete/user/' + id);
-
-            console.log('Delete method', data.data[0]);
-            dataString = JSON.stringify(data.data[0]);
-            console.log('Resultado del delete :' + dataString)
-
+            console.log('cedula del usuario ' + contenido)
+            let create = await axios.post('http://localhost:3000/api/v1/administrator/deleteUser', contenido, {
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+            .then((response) => response)
+            .then((response) => console.log('resultado ' + response.status))
+            .then((json) => console.log(json))
+            .catch(error => console.log(error))
         }
-
-        catch(err : any) {
-             error.value = err.message
-             console.log(error.value)
-        }
-        finally{
-            return {dataString, error}
+            catch(err: any) {
+            error.value = err.message
+            console.log(error.value)
         }
     }
-    return Promise.resolve(load())
+    return { eliminar, error}
 }
 
-export default getAdmin
+export default deleteUser
 

@@ -7,6 +7,7 @@
   <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Editar</button>
   </router-link>
+  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2" @click="EliminarUser">Eliminar</button>
 </div>
 <div  id="carnet">
   <div class="card">
@@ -39,6 +40,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import { onMounted, ref } from "vue";
 import getUser from "../../funciones/getUser";
+import deleteUser from "../../funciones/deleteUser";
 import { userModel } from "../../modelo/modeloUser";
 import { jsPDF } from 'jspdf';
 import html2canvas from "html2canvas";
@@ -48,10 +50,10 @@ import html2canvas from "html2canvas";
 export default defineComponent({
     name: 'Carnet',
     props: ['id'],
-    
     setup(props) {
 
         let { user, userM, errorGet, load, showData } = getUser(props.id)
+        let { eliminar, error } = deleteUser(props.id)
         let cedulaN = ref<Number | null>()
         let url : any = ref()
         var userReturn : userModel | undefined | null;
@@ -82,8 +84,18 @@ export default defineComponent({
           }
         }
 
+        let EliminarUser = () => {
+          console.log('Eliminar usuario triggered');
+          Promise.resolve(eliminar()).then(() => {
+            // userReturn = userM?.value;
+            // cedulaN.value = userReturn?.cedula;
+            console.log('Usuario eliminado')
+          })
+        }
+
         return {
-            url, user, userM, showData, makePDF
+            url, user, userM, showData, makePDF,
+            EliminarUser
         }
     }
 })
