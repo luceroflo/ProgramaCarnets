@@ -35,9 +35,9 @@
                 <img :src="url">
             </div>
             <div class="buttons-holder">
-                <button @click="Registrar" type="submit">Registrar</button>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" @click="Registrar" type="submit">Registrar</button>
                 <router-link :to="{ name: 'Principal' }">
-                    <button>Cancelar</button>
+                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Cancelar</button>
                 </router-link>
             </div>        
         </form>
@@ -265,7 +265,7 @@ export default defineComponent({
         cursor: pointer;
     }
     button {
-        background: #0b6dff;
+    /* background: #0b6dff; */
         border: 0;
         padding: 10px 20px;
         margin-top: 20px;

@@ -7,6 +7,7 @@ import VerAdmin from '../views/Paginas/VerAdmin.vue'
 import EditUser from '../views/Paginas/EditUser.vue'
 import Agregar from '../views/Paginas/Agregar.vue'
 import NotFound from '../views/NotFound.vue'
+import Carnet from '../views/Paginas/Carnet.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -41,6 +42,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/EditUser:id',
     name: 'EditUser',
     component: EditUser,
+    props: true,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/carnet:id',
+    name: 'Carnet',
+    component: Carnet,
     props: true,
     meta: { requiresAuth: true }
   },

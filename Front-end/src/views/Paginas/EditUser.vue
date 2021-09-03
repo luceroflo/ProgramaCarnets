@@ -2,6 +2,10 @@
     <div class="add-contenedor">
         <form @submit.prevent="handleSubmit">
             <div v-if="showData">
+                <div id="preview">
+                    <!-- <img :src="previewImage" /> -->
+                    <img class="imagen" :src="url">
+                </div>                
                 <div class="top-front">
                     <div class="inside">
                         <input v-model="userM.nombre" type="text" required name="nombre" placeholder="Nombre" />
@@ -31,14 +35,10 @@
                 <div>
                     <input type="file" accept="image/*" @change="pickFile2">
                 </div>
-                <div id="preview">
-                    <!-- <img :src="previewImage" /> -->
-                    <img :src="userM.foto">
-                </div>
-                <div class="buttons-holder">
-                    <button type="submit">Guardar</button>
+                <div class="grid grid-cols-2 gap-4 ">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" type="submit">Guardar</button>
                     <router-link :to="{ name: 'Principal' }">
-                        <button>Cancelar</button>
+                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Cancelar</button>
                     </router-link>
                 </div> 
             </div>  
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, onUpdated } from "@vue/runtime-core";
 
 import { defineComponent, inject } from "@vue/runtime-core";
 import { ref } from "vue";
@@ -75,6 +75,10 @@ export default defineComponent({
             Promise.resolve(load()).then(() => {
                 userReturn = userM?.value;
                 cedulaN.value = userReturn?.cedula;
+                // if (userM.value != undefined) {
+                //     url = userM?.value.foto 
+                //     console.log('url' + url)
+                // }
             })
         })
         
@@ -122,6 +126,9 @@ export default defineComponent({
                     let r = e?.target?.result
                     if (r !== null || r!== undefined){
                         url.value = r as string;
+                        if (userM.value !== undefined) {
+                            userM.value.foto = r as string
+                        }
                         //formUser.value.userReg.foto = url.value
                     }
                     console.log('Evento:',e?.target?.result)
@@ -132,6 +139,13 @@ export default defineComponent({
                 url.value == null;
             }
         }
+
+        onUpdated(() => {
+            if (userM.value != undefined) {
+                url.value = userM?.value.foto 
+                console.log('url updated' + url.value)
+            }
+        })
         //#endregion 
 
         //----------------------------------------------------------------------------------------
@@ -160,5 +174,110 @@ export default defineComponent({
 </script>
 
 <style>
+.grid button {
+    margin: auto
+}
+
+.imagen {
+    height: 190px;
+    width: 190px;
+      margin: 0 auto 30px;
+  border-radius: 50%;
+}
+
+
+form {
+        max-width: 420px;
+        margin: 30px auto;
+        background: white;
+        text-align: left;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 3px -2px 27px 8px rgba(120,127,128,1);
+        /* border: 1px solid gray */
+    }
+        /* .top-front {
+        display: block;
+        text-align: center;
+        margin: auto
+    }
+    .top-fromt div {
+        margin: 0px 25px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        font-size: 16px;
+        grid-gap: 10px;
+    } */
+    .buttons-holder {
+        text-align: center;
+    }
+    label {
+        color: #aaa;
+        display: inline-block;
+        margin: 25px 0 15px;
+        font-size: 0.6em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+    }
+    input, select {
+        display: block;
+        padding: 10px 6px;
+        margin: 20px 0px;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        color: #555
+    }
+    input[type="checkbox"] {
+        display: inline-block;
+        width: 16px;
+        margin: 0 20px 0 20px;
+        position: relative;
+        top: 2px
+    }
+    .pill {
+        display: inline-block;
+        margin: 20px 10px 0 0;
+        padding: 6px 12px;
+        background: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        color: #777;
+        cursor: pointer;
+    }
+    button {
+        background: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer
+    }
+    .submit {
+        text-align: center;
+    }
+    .error {
+        color: #ff0062;
+        margin-top: 10px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+    textarea {
+        width: 100%;
+    }
+    .top-front div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+    img {
+        margin: auto;
+    }
+
 
 </style>
