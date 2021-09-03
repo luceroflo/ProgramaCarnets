@@ -1,8 +1,11 @@
+import { userModel } from "@/modelo/modeloUser"
 import { ref } from "vue"
 
 const getUsers = () => {
     const users = ref([])
     const error = ref(null)
+    const listaUsers = ref<userModel[]>()
+    const listLength = ref<number>()
     let showData = ref<boolean>(false)
     
     const load = async () => {
@@ -11,7 +14,10 @@ const getUsers = () => {
         if (!data.ok) {
           throw Error('No data available')
         }
+
         users.value = await data.json()
+        listaUsers.value = users.value
+        listLength.value = users.value.length
         showData.value = true
       }
       catch(err) {
@@ -20,7 +26,7 @@ const getUsers = () => {
       }
     }
 
-    return { users, error, load, showData }
+    return { users, listLength, listaUsers, error, load, showData }
 }
 
 export default getUsers

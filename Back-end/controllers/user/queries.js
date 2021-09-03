@@ -15,7 +15,7 @@ const getUser = async (cedula) => {
 const getAllUsers = async () => {
     return rows = await pg.query(`SELECT t.nombre, t.apellido,
                                     t.correo, t.telf_1, 
-                                    t.id, t.cedula, t.foto
+                                    t.id, t.cedula, t.carrera, t.foto
                                   FROM carnet.tb_usuario t
                                   ORDER BY t.id`);
 }
