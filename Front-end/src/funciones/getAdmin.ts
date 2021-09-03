@@ -37,7 +37,7 @@ const getAdmin = (id: string) => {
 
             //admin.value = await data
 
-        catch(err) {
+        catch(err : any) {
              error.value = err.message
              console.log(error.value)
         }

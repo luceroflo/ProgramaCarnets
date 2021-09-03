@@ -30,7 +30,7 @@ const getAdmin2 = (id: string) => {
             console.log('GET METHOD RESULT: ' , adminM?.value)
             //console.log('data value ' + dataValue.value)
         }
-        catch(err) {
+        catch(err: any) {
              error.value = err.message
              console.log(error.value)
         }

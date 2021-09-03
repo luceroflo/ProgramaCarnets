@@ -209,8 +209,8 @@ body {
 
 .card__body {
   padding: 30px;
-  background: #01519d;
-  /* background: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png);  */
+  /* background: #01519d; */
+  background: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png); 
 text-align: center;
 image-resolution: 100px;
 height: inherit;

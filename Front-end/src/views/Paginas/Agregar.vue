@@ -71,7 +71,7 @@ export default defineComponent({
             carrera: '',
             especializacion: '', 
             foto: '',
-            id: '',
+            id: '1',
             cedulaN: null
         }
 

@@ -18,7 +18,8 @@
                 </div>
                 <div>
                     <label class="font-mono text-base" for="">Buscar</label>
-                    <input v-model="search" type="text" class="h-8" />
+                    <input type="text" placeholder="Buscar..." v-model="searchQuery" />
+                    <!-- <input v-model="search" type="text" class="h-8" /> -->
                 </div>
             </div>
         </div>
@@ -104,7 +105,7 @@
           <!-- <a aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
             1
           </a> -->
-          <span v-for="pagina in TotalPaginas()" v-on:click="getDataPagina(pagina)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+          <span v-for="pagina in TotalPaginas()" v-on:click="getDataPagina(pagina, false)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
             {{pagina}}
           </span>
           <!-- <a class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
@@ -132,7 +133,7 @@
 <script lang="ts">
 
 import { defineComponent, onMounted, onUpdated } from "@vue/runtime-core";
-import { computed, provide, ref, unref } from "vue";
+import { computed, provide, ref, unref, watch } from "vue";
 import getUsers from "../../funciones/getUsers"
 import { userModel } from "../../modelo/modeloUser";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
@@ -163,8 +164,8 @@ export default defineComponent({
         let datosPagineados = ref<userModel[]>()
 
         const search = ref('') 
-        let names = ref(users)
-        let searchResult: userModel[] = [];
+        const searchQuery = ref('');
+        let searchResult = ref<userModel[]>();
         let x : any;
         const matching = computed(() => {
 
@@ -174,6 +175,13 @@ export default defineComponent({
             console.log("Eliminar clicked")
         }
 
+        watch(searchQuery, (newValue, oldValue) => {
+            console.log('searQuery' + searchQuery.value)
+            console.log('new value ' + newValue)
+            console.log('old-value ' + oldValue)
+            getDataPagina(0, true)
+        })
+
         onMounted(() => {
             load()
             Promise.resolve(load()).then(() => {
@@ -181,24 +189,12 @@ export default defineComponent({
                 if (listaUsers.value != undefined) {
                     console.log('Data Total = ', listaUsers.value.length)
                 }
-                getDataPagina(1)
+                getDataPagina(1, false)
             })
         })
 
-        onUpdated(() => {            
-            // names.value.filter((n) => {
-            //     n.includes(search);
-            // })
-            console.log(showData.value)
-            names.value.forEach((a : userModel) => {
-                //console.log(a.nombre);
-                if(a.nombre == search.value || a.cedula == parseInt(search.value)){
-                    console.log(a);
-                    searchResult.push(a);
-                }
-            })
-            x = searchResult;
-            users = ref(x);
+        onUpdated(() => {   
+            console.log('Search query value ' + searchQuery.value)
         })
 
         let TotalPaginas = () => {
@@ -210,43 +206,93 @@ export default defineComponent({
             }
         }
 
-        let getDataPagina = (noPagina : number) => {
-            pagination.value.currentPage = noPagina
-            rawData = []
-            let ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
-            let fin = (noPagina * pagination.value.perPage)
+        let getDataPagina = (noPagina : number, filter : boolean) => {
+            //searchedProducts()
+            let ini: number;
+            let fin: number;
 
-            console.log('En GETDATA with index', noPagina)
-            for (let index = ini; index < fin; index++) {
-                if (listaUsers.value != undefined) {
-                    // console.log('En GETDATA with index', listaUsers?.value[index])
-
-                    //rawData.push(unref(listaUsers?.value[index]))
-                    datosPagineados.value = listaUsers.value.slice(ini,fin)
-                } else {
-                    console.log('Lista Users undefined')
-                }   
+            if (!filter) {
+                pagination.value.currentPage = noPagina
+                rawData = []
+                ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
+                fin = (noPagina * pagination.value.perPage)
+            } else {
+                noPagina = pagination.value.currentPage
+                rawData = []
+                ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
+                fin = (noPagina * pagination.value.perPage)
             }
+
+            console.log('printing PAGE with index', pagination.value.currentPage)
+            //#region FILTER
+            if (listaUsers.value != undefined) {
+                if (filter) {
+                    searchResult.value = [];
+                    listaUsers.value.filter((user) => {
+                        //Filtros
+                        let belongCedula = false;
+                        if (user.cedula != null) {
+                            belongCedula = user.cedula.toString().toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1; 
+                        }
+                        let belongNombre = user.nombre.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1;
+                        let belongApellido = user.apellido.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1;
+                        let belongCarrera = user.carrera.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1; 
+                        //Pushing to searchResult
+                        if (belongNombre || belongApellido || belongCedula || belongCarrera) {
+                            console.log('nombres coincidentes ' + user.nombre);
+                            if (searchResult.value != undefined) {
+                                console.log('push value');
+                                searchResult.value.push(user);
+                            }
+                        }
+                    });
+                    console.log('for en el filtro: ')
+                    if (searchResult.value != undefined) {
+                        for (let index = ini; index < fin; index++) {
+                            datosPagineados.value = searchResult.value.slice(ini,fin)   
+                        }
+                    }                     
+                }
+                else {
+                    //For de todos los datos
+                    for (let index = ini; index < fin; index++) {
+                        datosPagineados.value = listaUsers.value.slice(ini,fin)   
+                    }                    
+                }  
+            } 
+            //#endregion       
+            else {
+                console.log('Lista Users undefined')
+            } 
+        };
+
+
             // rawData.forEach(element => {
             //     console.log(element)
             // });
 
+                        // return users.value.filter((user) => {
+            //     console.log('datos ', datosPagineados.value)
+            //     console.log('user filter' + user.title)
+            //     return                user.title
+            //         .toLowerCase()
+            //         .indexOf(searchQuery.value.toLowerCase()) != -1
+            //     });
+
             //datosPagineados.value = rawData
-            console.log('datos ', datosPagineados.value)
-        }
 
         let getPrevoiusPage = () => {
             if (pagination.value.currentPage > 1) {
                 pagination.value.currentPage--
             }
-            getDataPagina(pagination.value.currentPage)
+            getDataPagina(pagination.value.currentPage, false)
         }
         let getNextPage = () => {
             if (TotalPaginas != undefined) {
                 if (pagination.value.currentPage < TotalPaginas()) {
                     pagination.value.currentPage++
                 }
-                getDataPagina(pagination.value.currentPage)
+                getDataPagina(pagination.value.currentPage, false)
             } else {
                 console.log('Total paginas es undefined o nulo')
             }
@@ -254,9 +300,14 @@ export default defineComponent({
 
 
         return {
+            //INFO OBJECTS USER
             users, error, search, matching, showData, listaUsers,
+            //PAGINATION
             pagination, ChevronLeftIcon, ChevronRightIcon, TotalPaginas, datosPagineados, getDataPagina, getPrevoiusPage, getNextPage,
-            deleteAction
+            //DELETE
+            deleteAction,
+            //SEARCH QUERY
+            searchQuery, //searchedProducts
         }
     }
 })

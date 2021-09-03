@@ -20,7 +20,7 @@ const getUsers = () => {
         listLength.value = users.value.length
         showData.value = true
       }
-      catch(err) {
+      catch(err : any) {
         error.value = err.message
         console.log(error.value)
       }
