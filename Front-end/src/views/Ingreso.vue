@@ -1,16 +1,5 @@
 <template>
   <div class="grid grid-cols-2 h-screen">
-    <!-- <div class="left">
-      <img src="../assets/img/logo.png" />
-      <div class="titles">
-        <h1 class="font-sans text-white text-8xl py-5">
-          UNESR
-        </h1>
-        <h3 class="font-sans text-white text-4xl py-5 italic">
-          Sistema de Carnetización
-        </h3>
-      </div>
-    </div> -->
     <left-login></left-login>
     <div class="right">
       <form autocomplete="off">

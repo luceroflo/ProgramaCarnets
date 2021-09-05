@@ -7,14 +7,14 @@
         <div class="grid grid-cols-2 gap-4 h-20 mb-40">
             <div>
                 <router-link :to="{ name: 'Agregar' }">
-                    <button class="w-1/3 mx-20 p-5 h-full bg-indigo-800 hover:bg-indigo-700 text-white font-bold back-img">
+                    <button class="w-1/3 mx-20 p-5 h-full bg-indigo-800 hover:bg-indigo-700 text-white font-bold back-img rounded-full">
                         Agregar
                     </button>
                 </router-link>
             </div>
             <div>
                 <router-link :to="{ name: 'Ver' }">
-                    <button class="w-1/3 mx-20 p-5 h-full bg-indigo-800 hover:bg-indigo-700 text-white font-bold back-img">
+                    <button class="w-1/3 mx-20 p-5 h-full bg-indigo-800 hover:bg-indigo-700 text-white font-bold back-img rounded-full">
                         Ver - consultar
                     </button>
                 </router-link>

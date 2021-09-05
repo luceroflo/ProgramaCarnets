@@ -1,72 +1,107 @@
 <template>
   <div class="grid grid-cols-2 h-screen">
-    <!-- <div class="left">
-      <div class="img__box"><img src="../assets/img/logo.png" /></div>
-    </div> -->
     <left-login></left-login>
     <div class="right">
-      <div class="form__box">
+      <div class="">
         <form @submit.prevent="handleSubmit" class="form__login" autocomplete="off">
           <div class="form__title">
-              <h2>Registrarse</h2>
+            <h2 class="font-sans text-black text-4xl py-5 italic">Registro</h2>
+          </div>
+          <div class="">
+            <img src="../assets/img/register.jpg"  alt="">
+          </div>
+          <div class="grid grid-cols-2">
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pr-5">
+              <label for="">Usuario:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.username"
+                  type="text"
+                  name="Usuario"                    
+                  placeholder="Usuario"
+                  required
+                  autofocus
+              />
+              <div v-if="registro.usuarioError" class="error">{{registro.usuarioError}}</div>
+            </div>
+            <div  class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pl-5">
+              <label for="">Nombre:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.nombre"
+                  type="text"
+                  name="Nombre"                    
+                  placeholder="Nombre"
+                  required
+                  autofocus
+              />              
+            </div>
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pr-5">
+              <label for="">Apellido:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.apellido"
+                  type="text"
+                  name="Apellido"                    
+                  placeholder="Apellido"
+                  required
+                  autofocus
+              />
+            </div>
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pl-5">
+              <label for="">Cédula:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.cedula"
+                  type="text"
+                  name="Cedula"                    
+                  placeholder="Cedula"
+                  required
+                  autofocus
+              />              
+            </div>    
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pr-5">
+              <label for="">Correo:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.correo"
+                  type="email"
+                  name="correo"
+                  placeholder="Correo"
+                  required
+              />
+            </div>
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pl-5">
+              <label for="">Teléfono:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.telf_1"
+                  type="number"
+                  name="telefono"
+                  placeholder="4142566555"
+                  required
+              />          
+            </div>
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pr-5">
+              <label for="">Contraseña:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.password"
+                  type="password"
+                  name="contraseña"
+                  placeholder="Contraseña"
+                  required
+              />
+              <div v-if="registro.passwordError" class="error">{{registro.passwordError}}</div>           
+            </div>
+            <div class="grid grid-cols-1 gap mx-30 px-10 mb-2 py-2 pl-5">
+              <label for="">Confirmar ****:</label>
+              <input class="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  v-model="registro.adminReg.co_password"
+                  type="password"
+                  name="contraseña"
+                  placeholder="Confirmar Contraseña"
+                  required
+              />     
+              <div v-if="registro.co_passwordError" class="error">{{registro.co_passwordError}}</div>       
+            </div>        
           </div>
 
-          <input
-              v-model="registro.adminReg.username"
-              type="text"
-              name="Usuario"                    
-              placeholder="Usuario"
-              class="form__input"
-              required
-              autofocus
-          />
-          <div v-if="registro.usuarioError" class="error">{{registro.usuarioError}}</div>
 
-          <input
-              v-model="registro.adminReg.nombre"
-              type="text"
-              name="Nombre"                    
-              placeholder="Nombre"
-              class="form__input"
-              required
-              autofocus
-          />
 
-          <input
-              v-model="registro.adminReg.apellido"
-              type="text"
-              name="Apellido"                    
-              placeholder="Apellido"
-              class="form__input"
-              required
-              autofocus
-          />
-
-          <input
-              v-model="registro.adminReg.cedula"
-              type="text"
-              name="Cedula"                    
-              placeholder="Cedula"
-              class="form__input"
-              required
-              autofocus
-          />
-          <input
-              v-model="registro.adminReg.correo"
-              type="email"
-              name="correo"
-              placeholder="Correo"
-              class="form__input"
-              required
-          />
-          <input
-              v-model="registro.adminReg.telf_1"
-              type="number"
-              name="telefono"
-              placeholder="4142566555"
-              class="form__input"
-              required
-          />
           <!-- <input
               v-model="registro.adminReg.codigo"
               type="codigo"
@@ -74,34 +109,17 @@
               placeholder="Código"
               class="form__input"                    
           /> -->
-          <input
-              v-model="registro.adminReg.password"
-              type="password"
-              name="contraseña"
-              placeholder="Contraseña"
-              class="form__input"
-              required
-          />
-          <div v-if="registro.passwordError" class="error">{{registro.passwordError}}</div>
-          <input
-              v-model="registro.adminReg.co_password"
-              type="password"
-              name="contraseña"
-              placeholder="Confirmar Contraseña"
-              class="form__input"
-              required
-          />
-          <div v-if="registro.co_passwordError" class="error">{{registro.co_passwordError}}</div>
-          <button type="submit" value="Registrate" class="form__submit" >
-            Registrate
-          </button>
-
-          <p class="form__remember">
+          <div class="grid grid-cols-1 gap-5 px-32 mt-2">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-8 rounded-full" type="submit" value="Registrate">
+              Registrate
+            </button>
+            <p class="">
               ¿Tienes Cuenta?
-              <router-link :to="{ name: 'Ingreso' }">
-                  <a class="form__link">Inicia Sesión Aquí</a>
+              <router-link :to="{ name: 'Ingreso' }" class="">
+                  <a class="text-blue-500">Inicia Sesión Aquí</a>
               </router-link>
-          </p>
+            </p>
+          </div>
         </form>
       </div>
     </div>
@@ -203,5 +221,22 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.right img {
+  width: 140px;
+  margin: auto;
+}
 
+label {
+  text-align: left;
+  color: black;
+  padding-left: 0.5rem;
+  margin-bottom: 5px;
+}
+input {
+  color: #464646;
+    border: 1px solid #e9e9e9;
+  border-radius: 10px;
+    padding: 0.25rem 0.5rem;
+
+}
 </style>
