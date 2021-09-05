@@ -1,4 +1,6 @@
 <template>
+<div>
+
 <div class="atras">
   <router-link :to="{ name: 'Principal' }">
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Regresar</button>
@@ -98,7 +100,8 @@
             </div>
         </div>
     </div>
-</div>  
+</div> 
+</div> 
 </template>
 
 <script lang="ts">
