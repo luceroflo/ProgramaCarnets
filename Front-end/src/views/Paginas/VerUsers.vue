@@ -98,16 +98,16 @@
             </div>
         </div>
     </div>
-    </div>  
+</div>  
 </template>
 
 <script lang="ts">
 
 import { defineComponent, onMounted, onUpdated } from "@vue/runtime-core";
 import { computed, isRef, provide, ref, unref, watch } from "vue";
-import getUsers from "../../funciones/getUsers"
+import getUsers from "../../funciones/getUsers";
 import { userModel } from "../../modelo/modeloUser";
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid';
 
 export default defineComponent({
     name: 'Ver',
