@@ -47,15 +47,15 @@
             Cargando la data ...
         </div>
         <div class="mt-5 px-10">
-            <div class="flex-1 flex justify-between sm:hidden">
+            <!-- <div class="flex-1 flex justify-between sm:hidden">
                 <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                     Previous
                 </a>
                 <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                     Next
                 </a>
-            </div>
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            </div> -->
+            <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
                     <p class="text-sm text-gray-700">
                     Mostrando
@@ -83,7 +83,7 @@
                         <!-- <a aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                             1
                         </a> -->
-                        <span v-for="pagina in TotalPaginas()" v-on:click="getDataPagina(pagina, false)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                        <span v-for="pagina in TotalPaginas(true)" v-on:click="getDataPagina(pagina, false, true)" class="relative inline-flex items-center px-4 py-2 focus:bg-gray-400 cursor-pointer active:bg-gray-400 border border-gray-300 bg-white text-sm font-medium text-gray-700">
                             {{pagina}}
                         </span>
                         <!-- <a class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
@@ -104,7 +104,7 @@
 <script lang="ts">
 
 import { defineComponent, onMounted, onUpdated } from "@vue/runtime-core";
-import { computed, provide, ref, unref, watch } from "vue";
+import { computed, isRef, provide, ref, unref, watch } from "vue";
 import getUsers from "../../funciones/getUsers"
 import { userModel } from "../../modelo/modeloUser";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
@@ -125,6 +125,8 @@ export default defineComponent({
             total: listLength
         })
 
+        let lista = ref(listLength.value)
+
         //let rawData: userModel[] = []
         let rawData: Array<userModel> = []
 
@@ -140,9 +142,7 @@ export default defineComponent({
 
         watch(searchQuery, (newValue, oldValue) => {
             console.log('searQuery' + searchQuery.value)
-            console.log('new value ' + newValue)
-            console.log('old-value ' + oldValue)
-            getDataPagina(0, true)
+            getDataPagina(0, true, true)
         })
 
         onMounted(() => {
@@ -152,7 +152,7 @@ export default defineComponent({
                 if (listaUsers.value != undefined) {
                     console.log('Data Total = ', listaUsers.value.length)
                 }
-                getDataPagina(1, false)
+                getDataPagina(1, false, false)
             })
         })
 
@@ -160,31 +160,36 @@ export default defineComponent({
             console.log('Search query value ' + searchQuery.value)
         })
 
-        let TotalPaginas = () => {
+        let TotalPaginas = (reload: boolean) => {
             //console.log(Math.ceil(users.value.length / pagination.value.perPage))
-            if (listLength.value != undefined) {
+            if (lista.value != undefined) {
+                console.log('list' + lista.value)          
+                console.log('Maths' + Math.ceil(lista.value / pagination.value.perPage))
+                return Math.ceil(lista.value / pagination.value.perPage)
+            } else if (listLength.value != undefined && searchQuery.value == '') {
+                console.log('default')
                 return Math.ceil(listLength.value / pagination.value.perPage)
             } else {
                 return 0
             }
+        
         }
+        
 
-        let getDataPagina = (noPagina : number, filter : boolean) => {
+        let getDataPagina = (noPagina : number, filter : boolean, omit : boolean) => {
             //searchedProducts()
             let ini: number;
             let fin: number;
 
             if (!filter) {
+                // console.log('filter false ', filter)
                 pagination.value.currentPage = noPagina
-                rawData = []
-                ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
-                fin = (noPagina * pagination.value.perPage)
             } else {
+                // console.log('filter true ', filter)            
                 noPagina = pagination.value.currentPage
-                rawData = []
-                ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
-                fin = (noPagina * pagination.value.perPage)
             }
+            ini = (noPagina * pagination.value.perPage) - pagination.value.perPage
+            fin = (noPagina * pagination.value.perPage)
 
             console.log('printing PAGE with index', pagination.value.currentPage)
             //#region FILTER
@@ -202,25 +207,38 @@ export default defineComponent({
                         let belongCarrera = user.carrera.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1; 
                         //Pushing to searchResult
                         if (belongNombre || belongApellido || belongCedula || belongCarrera) {
-                            console.log('nombres coincidentes ' + user.nombre);
+                            //console.log('nombres coincidentes ' + user.nombre);
                             if (searchResult.value != undefined) {
-                                console.log('push value');
+                                //console.log('push value');
                                 searchResult.value.push(user);
                             }
                         }
                     });
-                    console.log('for en el filtro: ')
                     if (searchResult.value != undefined) {
                         for (let index = ini; index < fin; index++) {
                             datosPagineados.value = searchResult.value.slice(ini,fin)   
                         }
-                    }                     
+                        lista = ref(searchResult.value.length)
+                        console.log('número de coincidencias ' + lista.value)
+                        TotalPaginas(true)              
+                    }  
+                    //Pagination                           
                 }
                 else {
                     //For de todos los datos
-                    for (let index = ini; index < fin; index++) {
-                        datosPagineados.value = listaUsers.value.slice(ini,fin)   
-                    }                    
+                    if (omit) {
+                        console.log('omit true ' + omit)   
+                        if (searchResult.value != undefined) {
+                            for (let index = ini; index < fin; index++) {
+                                datosPagineados.value = searchResult.value.slice(ini,fin)   
+                            } 
+                        }                                             
+                    } else {
+                        console.log('omit false ' + omit)    
+                        for (let index = ini; index < fin; index++) {
+                            datosPagineados.value = listaUsers.value.slice(ini,fin)   
+                        }                                                
+                    }              
                 }  
             } 
             //#endregion       
@@ -233,14 +251,14 @@ export default defineComponent({
             if (pagination.value.currentPage > 1) {
                 pagination.value.currentPage--
             }
-            getDataPagina(pagination.value.currentPage, false)
+            getDataPagina(pagination.value.currentPage, false, true)
         }
         let getNextPage = () => {
             if (TotalPaginas != undefined) {
-                if (pagination.value.currentPage < TotalPaginas()) {
+                if (pagination.value.currentPage < TotalPaginas(false)) {
                     pagination.value.currentPage++
                 }
-                getDataPagina(pagination.value.currentPage, false)
+                getDataPagina(pagination.value.currentPage, false, true)
             } else {
                 console.log('Total paginas es undefined o nulo')
             }
