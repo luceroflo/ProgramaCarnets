@@ -111,6 +111,7 @@ import { computed, isRef, provide, ref, unref, watch } from "vue";
 import getUsers from "../../funciones/getUsers";
 import { userModel } from "../../modelo/modeloUser";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid';
+//UN CAMBIO
 
 export default defineComponent({
     name: 'Ver',
