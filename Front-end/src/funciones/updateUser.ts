@@ -5,6 +5,7 @@ import { ref } from "vue"
 
 const updateUser = (content: userModel | undefined | null) => {
     const error = ref(null)
+    let resultado = ref('');
 
     const update = async () => {
         
@@ -16,15 +17,16 @@ const updateUser = (content: userModel | undefined | null) => {
             }
         })
         .then((response) => response)
+        .then((response) => resultado.value = response.status.toString())
         .then((json) => console.log(json))
         .catch(error => console.log(error))
       }
-      catch(err) {
+      catch(err : any) {
         error.value = err.message
         console.log(error.value)
       }
     }
-    return { error, update }
+    return { error, resultado, update }
 }
 
 export default updateUser

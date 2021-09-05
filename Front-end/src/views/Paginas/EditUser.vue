@@ -24,18 +24,18 @@
                         <input v-model="userM.correo" type="text" placeholder="Correo@gmail.com">               
                     </div>
                 </div>            
-                <div v-if="formUser.showCarrera">
+                <div class="carrera" v-if="formUser.showCarrera">
                     <select v-model="userM.carrera" name="" id="">
                         <option v-for="carrera in formUser.carreras" v-bind:value="carrera" v-bind:key="carrera">{{ carrera }}</option>
                     </select>
                 </div>
-                <div v-else>
+                <div class="especializacion" v-else>
                     <input v-model="userM.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
                 </div>
-                <div>
+                <div class="file">
                     <input type="file" accept="image/*" @change="pickFile2">
                 </div>
-                <div class="grid grid-cols-2 gap-4 ">
+                <div class="grid grid-cols-2 gap-4 buttons">
                     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" type="submit">Guardar</button>
                     <router-link :to="{ name: 'Principal' }">
                         <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Cancelar</button>
@@ -59,6 +59,8 @@ import { ref } from "vue";
 import getUser from "../../funciones/getUser";
 import updateUser from "../../funciones/updateUser";
 import { userModel } from "../../modelo/modeloUser";
+import Swal from "sweetalert2";
+// import router from "@/router";
 
 export default defineComponent({
     name: 'EditUser',
@@ -158,9 +160,19 @@ export default defineComponent({
             if (userReturn !== undefined) {
                 userReturn.cedulaN = cedulaN.value;
             }
-            let { error, update } = updateUser(userReturn)
+            let { error, resultado, update } = updateUser(userReturn)
             //userReturn.cedulaN = cedulaN?.value
-            update()
+
+            Promise.resolve(update())
+            .then(() => {
+                if (resultado.value === '200') {
+                    console.log('resultado ' + resultado);
+                    Swal.fire({title: 'Usuario editado', text: 'Guardado exitoso', icon: 'success'});
+                } else {
+                    console.log('resultado ' + resultado);
+                    Swal.fire({title: 'Error', text: 'Error en el guardado', icon: 'error'});
+                }
+            })
         }
 
         //#endregion
@@ -183,6 +195,10 @@ export default defineComponent({
     width: 190px;
       margin: 0 auto 30px;
   border-radius: 50%;
+}
+
+.carrera, .especializacion, .file, .top-front .inside, .buttons {
+    margin-top: 20px
 }
 
 

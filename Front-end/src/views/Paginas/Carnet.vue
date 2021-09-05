@@ -7,7 +7,7 @@
   <router-link :to="{ name: 'EditUser' , params: { id: user.cedula } }">
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2">Editar</button>
   </router-link>
-  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2" @click="EliminarUser">Eliminar</button>
+  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mx-2" @click="alertDisplay">Eliminar</button>
 </div>
 <div  id="carnet">
   <div class="card">
@@ -44,16 +44,18 @@ import deleteUser from "../../funciones/deleteUser";
 import { userModel } from "../../modelo/modeloUser";
 import { jsPDF } from 'jspdf';
 import html2canvas from "html2canvas";
-
+import Swal from "sweetalert2";
+import router from "@/router";
+// import { Router } from 'vue-router'
 
 
 export default defineComponent({
     name: 'Carnet',
-    props: ['id'],
+    props: ['id'],    
     setup(props) {
 
         let { user, userM, errorGet, load, showData } = getUser(props.id)
-        let { eliminar, error } = deleteUser(props.id)
+        let { eliminar, error, resultado } = deleteUser(props.id)
         let cedulaN = ref<Number | null>()
         let url : any = ref()
         var userReturn : userModel | undefined | null;
@@ -87,15 +89,37 @@ export default defineComponent({
         let EliminarUser = () => {
           console.log('Eliminar usuario triggered');
           Promise.resolve(eliminar()).then(() => {
-            // userReturn = userM?.value;
-            // cedulaN.value = userReturn?.cedula;
-            console.log('Usuario eliminado')
+            Swal.fire({title: 'Usuario eliminado!', text: '', icon: 'success'})
+            .then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                router.push({ name: 'Ver' })
+              }
+            })
           })
         }
 
+      let alertDisplay = () => {
+        Swal.fire({
+          title: 'Eliminar usuario!',
+          text: 'Seguro que desea eliminar este usuario ?',
+          icon: 'warning',
+          showCloseButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Confirmar',
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            EliminarUser();
+          } 
+          // else if (result.isDenied) {
+          //   Swal.fire('Acción cancelada', '', 'info')
+          // }
+        })
+      }
         return {
             url, user, userM, showData, makePDF,
-            EliminarUser
+            alertDisplay, EliminarUser
         }
     }
 })
