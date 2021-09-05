@@ -20,7 +20,14 @@
                 </router-link>
             </div>
         </div>
-        <div class="admin" >
+        <div class="admin grid grid-cols-2 gap-4" >
+            <div class="mt-4 mx-4">
+                <button @click="LogOut" class="bg-black-500 hover:bg-black-700 text-white font-bold py-2 px-4 rounded border-solid border border-black-500">
+                    <span>
+                        <img src="../assets/img/logout.png" alt="">
+                    </span>
+                </button>
+            </div>
             <router-link :to="{ name: 'VerAdmin' }">
                 <div class="text-xl">
                     <img src="../assets/img/admin-logo.png" alt="">
@@ -35,12 +42,26 @@
 
 <script>
 import { defineComponent, inject } from "@vue/runtime-core";
+import router from "@/router";
 
 export default defineComponent({
     name: 'Principal',
     setup() {
         const userLoged = inject('userLoged')
         console.log(userLoged.value.user + ' ' + userLoged.value.password)
+
+
+        function LogOut() {
+            console.log('call logout function then goto ingreso.view')
+            //TODO: LogOut Promise(request) -> logout.ts
+            
+            //Execute inside Promise
+            router.push({ name: 'Ingreso' })
+        }
+
+        return {
+            LogOut
+        }
     }
 })
 </script>
@@ -77,6 +98,15 @@ export default defineComponent({
         background-color: dodgerblue;
         box-shadow: 10px 10px #98969638
     }
+    .wrap-button {
+        position: absolute;
+    }
+    .wrap-button img {
+        width: 40px;
+    }
+
+
+
     .head-nav {
         background: #000f8c;
         height: 180px;

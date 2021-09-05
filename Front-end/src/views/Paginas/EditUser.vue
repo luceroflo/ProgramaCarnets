@@ -185,7 +185,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .grid button {
     margin: auto
 }

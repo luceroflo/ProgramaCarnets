@@ -46,7 +46,6 @@ import { jsPDF } from 'jspdf';
 import html2canvas from "html2canvas";
 import Swal from "sweetalert2";
 import router from "@/router";
-// import { Router } from 'vue-router'
 
 
 export default defineComponent({

@@ -80,7 +80,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 
       form {
         max-width: 420px;
