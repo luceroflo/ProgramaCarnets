@@ -17,7 +17,7 @@ const login = (usuario: string, password: String) => {
             //SI PASA TODAS LAS VALIDACIONES ENTONCES
             result.value = true
           }
-          catch(err) {
+          catch(err: any) {
             result.value = false
             error.value = err.message
             console.log(error.value)

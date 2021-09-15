@@ -25,13 +25,12 @@
                 </select>
             </div>
             <div v-else>
-                <input v-model="formUser.userReg.especializacion" type="text" placeholder="Especializacion" name="especializacion" />
+                <input v-model="formUser.userReg.carrera" type="text" placeholder="Especializacion" name="especializacion" />
             </div>
             <div>
                 <input type="file" accept="image/*" @change="pickFile2">
             </div>
             <div id="preview">
-                <!-- <img :src="previewImage" /> -->
                 <img :src="url">
             </div>
             <div class="buttons-holder">
@@ -46,8 +45,10 @@
 
 <script lang="ts">
 import { defineComponent, onUpdated, ref, watch } from "@vue/runtime-core";
-import { userModel } from "../../modelo/modeloUser"
-import insertUser from "../../funciones/insertUser"
+import { userModel } from "../../modelo/modeloUser";
+import insertUser from "../../funciones/insertUser";
+import Swal from "sweetalert2";
+import router from "@/router";
 
 export default defineComponent({
     name: 'Agregar',
@@ -127,21 +128,34 @@ export default defineComponent({
             }
         }
 
-        let handleSubmit = () => {
-            const { error, insert } = insertUser(userReg)
-            insert()
-        }
-        
-        // onUpdated(() => {
-        //     console.log('updated Hook role ' + formUser.value.role + formUser.value.showCarrera)
-        //     if (formUser.value.role == 'Estudiante') {
-        //         formUser.value.showCarrera = true
-        //     } else {
-        //         formUser.value.showCarrera = false
-        //     }
-        //     console.log('valor del nombre ' + formUser.value.userReg.nombre)
-        // })
+        // let userAddedAlert = () => {
+        //     Swal.fire({title: 'Usuario agregado exitosamente!', text: '', icon: 'success'})
+        //     .then((result) => {
+        //       if (result.isConfirmed) {
+        //         router.push({ name: 'Ver' })
+        //       }
+        //     })
+        // }
 
+
+        let handleSubmit = () => {
+            const { error, resultado, insert } = insertUser(userReg)                                                
+            Promise.resolve(insert()).then(() => {
+                if (resultado.value === '200') {
+                    console.log('resultado ' + resultado);
+                    Swal.fire({title: 'Usuario agregado con éxito', text: 'Guardado exitoso', icon: 'success'})
+                    .then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            router.push({ name: 'Principal' })
+                        }                        
+                    })
+                } else {
+                    console.log('resultado ' + resultado);
+                    Swal.fire({title: 'Error', text: 'Error agregando el usuario', icon: 'error'});
+                }
+            })
+        }
 
         return {
             formUser, CambioRole, url, pickFile2, handleSubmit
@@ -154,48 +168,6 @@ export default defineComponent({
     },
     methods: {
 
-        // pickFile (e : any) {
-        //     console.log('Llama esta funcion pickfile');
-
-        //     if((/^image+/.test(e.target.files[0].type))){
-        //         console.log(e.target.files[0])
-        //         //let reader = new FileReader
-        //         var reader = new FileReader();
-
-        //         //console.log(reader);
-
-        //         reader.onload = e => {
-        //             // El texto del archivo se mostrará por consola aquí
-        //             let r = e?.target?.result
-        //             if (r !== null || r!== undefined){
-        //                 this.previewImage = r as string;
-        //             }
-        //             console.log('Evento:',e?.target?.result)
-        //         };
-
-        //         //reader.readAsText(e.target.files[0]);
-        //         reader.readAsDataURL(e.target.files[0]);
-        //     }
-        //     else {
-        //         this.previewImage == null;
-        //     }
-        // }
-        // selectImage () {
-        //     this.$refs.fileInput.click()
-        // },
-        // pickFile () {
-        //     let input = this.$refs.fileInput
-        //     let file = input.files
-        //     if (file && file[0]) {
-        //     let reader = new FileReader
-        //     reader.onload = e => {
-        //         console.log('El target', e.target.result);
-        //         //this.previewImage = e.target.result
-        //     }
-        //     reader.readAsDataURL(file[0])
-        //     this.$emit('input', file[0])
-        //     }
-        // }
     }
 })
 </script>

@@ -3,7 +3,6 @@
         <form @submit.prevent="handleSubmit">
             <div v-if="showData">
                 <div id="preview">
-                    <!-- <img :src="previewImage" /> -->
                     <img class="imagen" :src="url">
                 </div>                
                 <div class="top-front">
