@@ -6,6 +6,7 @@ import { ref } from "vue"
 const insertUser = (content: userModel) => {
     const posts = ref([])
     const error = ref(null)
+    let resultado = ref('');
 
     const insert = async () => {
         
@@ -18,6 +19,7 @@ const insertUser = (content: userModel) => {
             }
         })
         .then((response) => response)
+        .then((response) => resultado.value = response.status.toString())
         .then((json) => console.log(json))
         .catch(error => console.log(error))
       }
@@ -27,7 +29,7 @@ const insertUser = (content: userModel) => {
       }
     }
     //return { posts, error, insert }
-    return { error, insert }
+    return { error, resultado, insert }
 }
 
 export default insertUser
