@@ -1,30 +1,38 @@
 //AQUI VA UN HTTP REQUEST AL SERVIDOR PARA HACER UN SELECT LOGGEARSE A LA APLICACIÓN
 import { ref } from "@vue/reactivity";
+import axios from "axios";
 
-const login = (usuario: string, password: String) => {
-    const result = ref(false)
-    const error = ref(null)
+const login = (user: string, pass: String) => {
+    const result = ref('')
+    const errores = ref('')
 
-    const load = async () => {
-
-        try {
-            let data = await fetch('http://localhost:3000/' + usuario + password)
-            if (!data.ok) {
-              throw Error('Error en la validación del usuario')
-            }
-            //LEER EL CONTENIDO DE DATA E IMPRIMIR ERRORES CORRESPONDIENTES
-            //result.value = await data.json()
-            //SI PASA TODAS LAS VALIDACIONES ENTONCES
-            result.value = true
-          }
-          catch(err: any) {
-            result.value = false
-            error.value = err.message
-            console.log(error.value)
-          }
+    let resultado = '';
+    let logInfo = {
+      username: user,
+      password: pass
     }
 
-    return { result, error, load }
+
+    const load = async () => {
+      try {
+          let data = await axios.post('http://localhost:3000/api/v1/administrator/login', logInfo, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            }
+          })
+          .then((response) => response)
+          .then((response) => result.value = response.status.toString())
+          .then((json) => console.log(json))
+          .catch(error => errores.value = JSON.parse(JSON.stringify(error.response)))
+        }
+        catch(err: any) {
+          console.log('error in the request')
+          errores.value = err.message
+          console.log(errores.value)
+        }
+    }
+
+    return { result, errores, load }
 }
 
 export default login

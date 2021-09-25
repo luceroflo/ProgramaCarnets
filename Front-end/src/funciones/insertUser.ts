@@ -15,7 +15,7 @@ const insertUser = (content: userModel) => {
 
         let create = await axios.post('http://localhost:3000/api/v1/user/register', content, {
             headers: {
-                'Content-type': 'application/json; charset=UTF-8',
+              'Content-type': 'application/json; charset=UTF-8',
             }
         })
         .then((response) => response)

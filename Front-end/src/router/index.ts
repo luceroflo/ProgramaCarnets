@@ -75,6 +75,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if(to.meta.requiresAuth) {
     //need to login
+    
     next()
   }
   else {

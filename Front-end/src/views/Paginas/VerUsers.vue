@@ -6,7 +6,7 @@
 </div>
 <div class="">
     <div class="filter-menu">
-        <h4 class="text-4xl italic text-white mb-7">Usarios Registrados</h4>
+        <h4 class="text-4xl italic text-white mb-7">Usuarios Registrados</h4>
         <div class="grid grid-cols-2 gap-4">
             <div class="">
                 <label class="font-mono text-base" for="">Filtrar por tipo:</label>
