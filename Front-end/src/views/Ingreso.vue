@@ -41,7 +41,7 @@
         </div>
         <div class="mt-8">
           <!-- <router-link :to="{ name: 'Principal' }" class="mx-4"> -->
-            <button type="submint" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
               Conectarse
             </button>
           <!-- </router-link> -->
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onUpdated, ref } from "@vue/runtime-core";
+import { defineComponent, inject, onMounted, onUpdated, ref } from "@vue/runtime-core";
 import login from '../funciones/login';
 import LeftLogin from "../components/left-login.vue"
 import router from "@/router";
@@ -85,6 +85,8 @@ export default defineComponent({
         console.log(userLogin.value.user + ' ' + userLogin.value.password)
         const { result, errores, load } = login(userLogin.value.user, userLogin.value.password)
 
+        //persist();
+
         Promise.resolve(load()).then(() => {
           if (result.value == '200') {
             console.log('Login Succesful')
@@ -99,8 +101,31 @@ export default defineComponent({
         // .catch(() => {console.log('error') })        
       }
 
+      const persist = () => {
+        localStorage.userLogin.value.user = localStorage.userLogin.value.user;
+        localStorage.userLogin.value.password = localStorage.userLogin.value.password;
+        console.log('imaginen que estoy haciendo más cosas...');
+        console.log('persist user value ' + userLogin.value.user);
+        console.log('persist user password ' + userLogin.value.password);
+      }
+
+      onMounted(() => {
+      //   if (userLogin.value.user != undefined && userLogin.value.password != undefined) {
+      //     if (localStorage.userLogin.value.user) {
+      //       userLogin.value.user = localStorage.userLogin.value.user;
+      //     }
+      //     if (localStorage.userLogin.value.password) {
+      //       userLogin.value.password = localStorage.userLogin.value.password;
+      //     }
+      //   }        
+      //   console.log("On Mounted Hook executed users values in the local storage");
+
+
+      })
+
       onUpdated(() => {
         console.log('updated')
+
       })
 
       return {

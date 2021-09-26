@@ -8,14 +8,14 @@
     <div class="filter-menu">
         <h4 class="text-4xl italic text-white mb-7">Usuarios Registrados</h4>
         <div class="grid grid-cols-2 gap-4">
-            <div class="">
+            <!-- <div class="">
                 <label class="font-mono text-base" for="">Filtrar por tipo:</label>
                 <select name="tipo" id="" class="h-8">
                     <option value="Estudiante">Estudiante</option>
                     <option value="Docente">Docente</option>
                     <option value="Personal">Personal</option>
                 </select>
-            </div>
+            </div> -->
             <div class="">
                 <label class="font-mono text-base" for="">Buscar:</label>
                 <input type="text" placeholder="Buscar..." v-model="searchQuery" />

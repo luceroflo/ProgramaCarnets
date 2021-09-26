@@ -57,9 +57,14 @@ export default defineComponent({
         let CambioRole = (() => {
             console.log('updated Function role ' + formUser.value.role + formUser.value.showCarrera)
             if (formUser.value.role == 'Estudiante') {
-                formUser.value.showCarrera = true
+                formUser.value.userReg.rol = null
+                formUser.value.showCarrera = true                
+            } else if  (formUser.value.role == 'Docente') {
+                formUser.value.showCarrera = false
+                formUser.value.userReg.rol = 1
             } else {
                 formUser.value.showCarrera = false
+                formUser.value.userReg.rol = 2
             }
         })
 
@@ -73,7 +78,8 @@ export default defineComponent({
             especializacion: '', 
             foto: '',
             id: '1',
-            cedulaN: null
+            cedulaN: null,
+            rol: null
         }
 
         //let selectedFile : any
