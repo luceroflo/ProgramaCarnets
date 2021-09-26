@@ -24,11 +24,11 @@
                       <strong> <p>C.I: {{user.cedula}}</p> </strong>
                       <p></p>
                       <div v-if="user.rol == 1">
-                        <strong>Especialización: {{user.carrera}}</strong> 
+                        <strong>Especialización: {{user.especializacion}}</strong> 
                         <p>Docente</p>
                       </div>
                       <div v-else-if="user.rol == 2">
-                        <strong>Especialización: {{user.carrera}}</strong> 
+                        <strong>Especialización: {{user.especializacion}}</strong> 
                         <p>Trabajador</p>
                       </div>
                       <div v-else>
