@@ -2,7 +2,7 @@
   <div class="grid grid-cols-2 h-screen">
     <left-login></left-login>
     <div class="right">
-      <form autocomplete="off">
+      <form @submit.prevent="handleSubmit" autocomplete="off">
         <div class="form__title">
           <h2 class="font-sans text-black text-4xl py-5 mt-20 mb-5 italic">Iniciar Sesion</h2>
         </div>
@@ -35,16 +35,16 @@
           </div>
 
           <!-- MOMENTANEAMENTE ERRORES Y ROUTERLINK -->
-          <div>
-            {{errores}}
+          <div class="err">
+            {{error}}
           </div>
         </div>
         <div class="mt-8">
-          <router-link :to="{ name: 'Principal' }" class="mx-4">
-            <button type="submit" value="Conectarse"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
+          <!-- <router-link :to="{ name: 'Principal' }" class="mx-4"> -->
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >
               Conectarse
             </button>
-          </router-link>
+          <!-- </router-link> -->
 
           <router-link :to="{ name: 'Registro' }" class="mx-4">
             <a class="form__link text-blue-500" >Registrate</a>
@@ -56,9 +56,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, provide, ref } from "@vue/runtime-core";
+import { defineComponent, inject, onMounted, onUpdated, ref } from "@vue/runtime-core";
 import login from '../funciones/login';
 import LeftLogin from "../components/left-login.vue"
+import router from "@/router";
 
 
 export default defineComponent({
@@ -75,24 +76,60 @@ export default defineComponent({
       // provide('userLoged', userLogin)
 
       const userLogin : any = inject('userLoged')
+      let error = ref('')
 
-
-      let errores = '' as any
-
-      const submit = () => {
+      const handleSubmit = () => {
+        console.log('login');
+        //setTimeout(() =>{},5000); 
         
         console.log(userLogin.value.user + ' ' + userLogin.value.password)
-        const { result, error, load } = login(userLogin.value.user, userLogin.value.password)
-        load()
+        const { result, errores, load } = login(userLogin.value.user, userLogin.value.password)
 
-        if (!result) {
-          errores = error.value
-        }
-        
+        //persist();
+
+        Promise.resolve(load()).then(() => {
+          if (result.value == '200') {
+            console.log('Login Succesful')
+            router.push({ name: 'Principal' })
+          }
+          else {
+            console.log('Errores')
+            console.log(errores.value)
+            error.value = 'Usuario o contraseña incorrecto'
+          }
+        })
+        // .catch(() => {console.log('error') })        
       }
 
+      const persist = () => {
+        localStorage.userLogin.value.user = localStorage.userLogin.value.user;
+        localStorage.userLogin.value.password = localStorage.userLogin.value.password;
+        console.log('imaginen que estoy haciendo más cosas...');
+        console.log('persist user value ' + userLogin.value.user);
+        console.log('persist user password ' + userLogin.value.password);
+      }
+
+      onMounted(() => {
+      //   if (userLogin.value.user != undefined && userLogin.value.password != undefined) {
+      //     if (localStorage.userLogin.value.user) {
+      //       userLogin.value.user = localStorage.userLogin.value.user;
+      //     }
+      //     if (localStorage.userLogin.value.password) {
+      //       userLogin.value.password = localStorage.userLogin.value.password;
+      //     }
+      //   }        
+      //   console.log("On Mounted Hook executed users values in the local storage");
+
+
+      })
+
+      onUpdated(() => {
+        console.log('updated')
+
+      })
+
       return {
-        submit, userLogin, errores
+        handleSubmit, userLogin, error
       }
     }
 })
@@ -113,6 +150,12 @@ export default defineComponent({
   background: white;
   border-radius: 50%;
 } 
+
+.err {
+  margin-top: -10px;
+  font-weight: bold;
+  color: red
+}
 
 .right img {
   margin: auto;

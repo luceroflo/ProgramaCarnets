@@ -15,8 +15,7 @@
           <div class="card__face card__face--front">
               <div class="card__content">
                   <div class="card__header">
-                      <h2>UNESR</h2>
-
+                      <h2>UNESR</h2>       
                       <img  :src="user.foto" alt="" class="pp" />
                       <h2 class="font-sans italic text-base text-white">{{user.nombre}} {{user.apellido}}</h2>
                   </div>
@@ -24,9 +23,27 @@
                       <h3>{{user.role}}</h3>
                       <strong> <p>C.I: {{user.cedula}}</p> </strong>
                       <p></p>
-                      <strong>Carrera: {{user.carrera}}</strong> 
+                      <div v-if="user.rol == 1">
+                        <strong>Especialización: {{user.carrera}}</strong> 
+                        <p>Docente</p>
+                      </div>
+                      <div v-else-if="user.rol == 2">
+                        <strong>Especialización: {{user.carrera}}</strong> 
+                        <p>Trabajador</p>
+                      </div>
+                      <div v-else>
+                        <strong>Carrera: {{user.carrera}}</strong>                         
+                      </div>
                   </div>
                   <div class="card__body">
+                    <img src="../../assets/img/logo.png" /> 
+                    <!-- <h5>Universidad Nacional Experimental Simón Rodriguez</h5> -->
+
+                    <!-- <h5>Universidad</h5>
+                    <h5>Nacional Experimental</h5>
+                    <h5>Simón Rodriguez</h5> -->
+
+                    <p>Palo Verde</p>
                       <!-- <strong>lacinia</strong> quis sapien placerat, <strong>laoreet</strong> tincidunt nulla.</p> -->
                   </div>
               </div>
@@ -141,7 +158,7 @@ body {
   font-family: montserrat, sans-serif;
   width: 100%;
   min-height: 100vh;
-  background-image: url(https://image.freepik.com/vector-gratis/fondo-luces-puntuales_52683-43735.jpg); 
+  /* background-image: url(https://image.freepik.com/vector-gratis/fondo-luces-puntuales_52683-43735.jpg);  */
 }
 
 #carnet {
@@ -170,6 +187,12 @@ body {
   transform: rotateY(180deg);
 }
 
+.card__face {
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
 
 .card__face {
   position: absolute;
@@ -192,6 +215,7 @@ body {
 .card__face--front h2 {
   color: #FFF;
   font-size: 32px;
+  margin-bottom: 1rem;
 }
 
 .card__face--back {
@@ -206,8 +230,35 @@ body {
 
 .card__header {
   position: relative;
-  padding: 30px 30px 40px;
+  padding: 10px 30px 10px;
   background-color: #01519d;
+}
+.card__body p {
+  /* margin-top: 5px;
+  font-size: 8px;
+  color: black; */
+
+    margin-top: 25px;
+    font-size: 0.95rem;
+    color: white;
+    background-color: #01519d;
+    padding: 5px;
+    padding-top: 0px;
+    border: 1px solid #01519d;
+} 
+h5 {
+    /* margin-top: 15px;
+    font-size: 24px;
+    background-color: #01519d;
+    color: white;
+    padding: 5px; */
+
+
+    /* margin-top: 15px; */
+    font-size: 24px;
+    background-color: #01519d;
+    color: white;
+    /* padding: 5px; */
 }
 
 .card__header:after {
@@ -225,9 +276,10 @@ body {
 
 .pp {
   display: block;
-  width: 168px;
-  height: 168px;
+  width: 142px;
+  height: 142px;
   margin: 0 auto 30px;
+  margin-top: 5px;
   border-radius: 50%;
   background-color: #FFF;
   border: 5px solid #FFF;
@@ -243,13 +295,20 @@ body {
 } */
 
 .card__body {
-  padding: 30px;
+  /* padding: 30px; */
   /* background: #01519d; */
-  background: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png); 
+  /* background-image: url(https://universidadesgratuitas.com/wp-content/uploads/2020/02/escudo-UNESR.png);  */
+  /* background-image: url("../"); */
 text-align: center;
 image-resolution: 100px;
-height: inherit;
+/* height: inherit;
+border-bottom: 1px solid black; */
 
+}
+.card__body img {
+  width: 10rem;
+  margin: auto;
+  opacity: 0.4;
 }
 
 .card__info h3 {

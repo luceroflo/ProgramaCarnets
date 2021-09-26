@@ -18,7 +18,7 @@
                         <select v-model="formUser.role" @change="CambioRole">
                             <option value="Estudiante">Estudiante</option>
                             <option value="Docente">Docente</option>
-                            <option value="Personal">Personal</option>
+                            <option value="Personal">Trabajador</option>
                         </select>
                         <input v-model="userM.correo" type="text" placeholder="Correo@gmail.com">               
                     </div>
@@ -76,6 +76,20 @@ export default defineComponent({
             Promise.resolve(load()).then(() => {
                 userReturn = userM?.value;
                 cedulaN.value = userReturn?.cedula;
+
+                if (userReturn != undefined) {
+                    if (userReturn.rol == null) {
+                        formUser.value.role = 'Estudiante'
+                        formUser.value.showCarrera = true                
+                    } else if  (userReturn.rol == 1) {
+                        formUser.value.role = 'Docente'
+                        formUser.value.showCarrera = false
+                    } else {
+                        formUser.value.role = 'Personal'
+                        formUser.value.showCarrera = false
+                        userReturn.rol = 2
+                    }
+                }
                 // if (userM.value != undefined) {
                 //     url = userM?.value.foto 
                 //     console.log('url' + url)
@@ -85,10 +99,18 @@ export default defineComponent({
         
         let CambioRole = (() => {
             console.log('updated Function role ' + formUser.value.role + formUser.value.showCarrera)
-            if (formUser.value.role == 'Estudiante') {
-                formUser.value.showCarrera = true
-            } else {
-                formUser.value.showCarrera = false
+
+            if (userReturn != undefined) {
+                if (formUser.value.role == 'Estudiante') {
+                    userReturn.rol = null
+                    formUser.value.showCarrera = true                
+                } else if  (formUser.value.role == 'Docente') {
+                    formUser.value.showCarrera = false
+                    userReturn.rol = 1
+                } else {
+                    formUser.value.showCarrera = false
+                    userReturn.rol = 2
+                }
             }
         })
 

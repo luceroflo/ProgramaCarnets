@@ -20,9 +20,10 @@ const actualizaAdmin = async (admin) => {
                                   correo = $4, telf_1 = $5, cedula = $6 WHERE username = $1`, [admin.username, admin.nombre, admin.apellido, admin.correo, admin.telf_1, admin.cedula, admin.usernameN]);
 }
 
-const loginAdmin = async (username, password) => {
-    rows = await pg.query(`SELECT carnet.loginAdmin($1, $2)`, [username, password]);
-        if(rows.rows[0] == null || rows.rows[0] == undefined){
+const   loginAdmin = async (username, password) => {
+    rows = await pg.query(`SELECT carnet.loginadmin($1, $2)`, [username, password]);
+        console.log("Se ejecuta admin", rows.rows);
+        if(rows.rows[0].loginadmin == null || rows.rows[0] == undefined){
             return null;
         }
         return 'SUCCESS';

@@ -35,8 +35,8 @@ const insertAdministrator = async (req, reply) => {
 const loginAdministrator = async (req, reply) => {
     try{
         var res = await loginAdmin(req.body.username, req.body.password);
-        if(res.rows[0] == null || res.rows[0] == undefined){
-            return reply.code(409).send(JSON.stringify({result:"inicio de sesión erróneo"}));
+        if(res == null || res == undefined){
+            return reply.code(409).send(JSON.stringify({result:"Usuario o clave incorrecta"}));
         }
         return reply.send(JSON.stringify({result:"inicio de sesión exitoso"}))
     }

@@ -16,7 +16,8 @@ const getUserSchema = {
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
                         cedula: {type: 'number'},
-                        foto: {type: 'string'}
+                        foto: {type: 'string'},
+                        rol: {type: 'number'}
                     }
                 }
             }
@@ -40,7 +41,8 @@ const getAllUserSchema = {
                         telf_1 : { type : 'string' },
                         id : { type : 'number' },
                         cedula: {type: 'number'},
-                        foto : { type: 'string'}
+                        foto : { type: 'string'},
+                        rol: {type: 'number'}
                     }
                 }
             }

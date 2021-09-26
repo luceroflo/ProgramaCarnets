@@ -53,7 +53,7 @@ const insertUser = async (req, reply) => {
     try{
         var res = await insertaUser(req.body.nombre, req.body.apellido, req.body.cedula,
                                     req.body.telf_1, req.body.correo, req.body.carrera,
-                                    req.body.id, req.body.foto);
+                                    req.body.id, req.body.foto, req.body.rol);
         reply.send(JSON.stringify({result: 'registro exitoso'}));
 
     }
@@ -65,7 +65,7 @@ const insertUser = async (req, reply) => {
 const updateUser = async (req, reply) => {
     try{
         var res = await actualizaUser(req.body.nombre, req.body.apellido, req.body.cedula,
-            req.body.telf_1, req.body.correo, req.body.carrera, req.body.cedulaN, req.body.foto);
+            req.body.telf_1, req.body.correo, req.body.carrera, req.body.cedulaN, req.body.foto, req.body.rol);
         reply.send(JSON.stringify({result: 'actualizacion exitosas'}));
     }
     catch(e){

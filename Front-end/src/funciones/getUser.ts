@@ -27,7 +27,7 @@ const getUser = (id: String) => {
         //console.log( 'User other ' + userM)
         showData.value = true
       }
-      catch(err) {
+      catch(err: any) {
         errorGet.value = err.message
         console.log(errorGet.value)
       }
