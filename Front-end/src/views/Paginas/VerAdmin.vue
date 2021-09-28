@@ -19,7 +19,7 @@
                     <router-link :to="{ name: 'Principal' }">
                         <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Cancelar</button>
                     </router-link>  
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Cambiar clave</button>
+                    <!-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Cambiar clave</button> -->
                 </div>                  
             </div> 
             <div class="loading" v-else>

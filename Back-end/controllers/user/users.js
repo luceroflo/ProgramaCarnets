@@ -53,7 +53,7 @@ const insertUser = async (req, reply) => {
     try{
         var res = await insertaUser(req.body.nombre, req.body.apellido, req.body.cedula,
                                     req.body.telf_1, req.body.correo, req.body.carrera,
-                                    req.body.id, req.body.foto, req.body.rol);
+                                    req.body.id, req.body.foto, req.body.rol, req.body.emision, req.body.vencimiento);
         reply.send(JSON.stringify({result: 'registro exitoso'}));
 
     }

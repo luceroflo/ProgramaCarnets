@@ -6,7 +6,7 @@ const getUser = async (cedula) => {
     
     return rows = await pg.query(`SELECT t.nombre, t.apellido,
                                          t.correo, t.telf_1,
-                                         t.id, t.cedula, t.carrera, t.foto, t.rol
+                                         t.id, t.cedula, t.carrera, t.foto, t.rol, t.emision, t.vencimiento
                                   FROM carnet.tb_usuario t
                                   WHERE t.cedula  = ${parseInt(cedula)}
                                   ORDER BY t.id`);
@@ -15,15 +15,15 @@ const getUser = async (cedula) => {
 const getAllUsers = async () => {
     return rows = await pg.query(`SELECT t.nombre, t.apellido,
                                     t.correo, t.telf_1, 
-                                    t.id, t.cedula, t.carrera, t.foto
+                                    t.id, t.cedula, t.carrera, t.foto, t.emision, t.vencimiento
                                   FROM carnet.tb_usuario t
                                   ORDER BY t.id`);
 }
 
-const insertaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol) => {    
+const insertaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol, emision, vencimiento) => {    
     return rows = await pg.query(`INSERT INTO carnet.tb_usuario (
-                                  nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol) 
-                                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol]);
+                                  nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol, emision, vencimiento) 
+                                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [nombre, apellido, cedula, telf_1, correo, carrera, id, foto, rol, emision, vencimiento]);
 }
 
 const actualizaUser = async (nombre, apellido, cedula, telf_1, correo, carrera, cedulaN, foto, rol) => {
