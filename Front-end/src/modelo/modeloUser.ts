@@ -14,6 +14,11 @@ export interface userModel {
     id: String,
     cedulaN: Number | null | undefined,
     rol: Number | null
+
+    //New Fields
+    emision: String,
+    vencimiento: String;
+
     
     //carreras: []
 }

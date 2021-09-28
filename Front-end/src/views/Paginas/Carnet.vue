@@ -15,24 +15,41 @@
           <div class="card__face card__face--front">
               <div class="card__content">
                   <div class="card__header">
+                      <img src="../../assets/img/fondo_carnet.jpg" alt="" class="fondo">
                       <h2>UNESR</h2>       
                       <img  :src="user.foto" alt="" class="pp" />
                       <h2 class="font-sans italic text-base text-white">{{user.nombre}} {{user.apellido}}</h2>
                   </div>
-                  <div class="card__info p-5">
-                      <h3>{{user.role}}</h3>
-                      <strong> <p>C.I: {{user.cedula}}</p> </strong>
-                      <p></p>
+                  <div class="card__info px-5 py-5">
+                      <div class="head">
+                        <strong> <p>C.I: {{user.cedula}}</p> </strong>
+                        <div>
+                          <div v-if="user.rol == 1">
+                          <p>Docente</p>
+                          </div>
+                          <div v-else-if="user.rol == 1">
+                          <p>Trabajador</p>
+                          </div>
+                          <div v-else>
+                          <p>Estudiante</p>
+                          </div>
+                        </div>
+                      </div>                      
                       <div v-if="user.rol == 1">
-                        <strong>Especialización: {{user.especializacion}}</strong> 
-                        <p>Docente</p>
+                        <p class="esp py-0.5">Especialización: {{user.especializacion}}</p> 
+                        <!-- <p>Docente</p> -->
                       </div>
                       <div v-else-if="user.rol == 2">
-                        <strong>Especialización: {{user.especializacion}}</strong> 
-                        <p>Trabajador</p>
+                        <p class="esp py-0.5">Especialización: {{user.especializacion}}</p> 
+                        <!-- <p>Trabajador</p> -->
                       </div>
                       <div v-else>
-                        <strong>Carrera: {{user.carrera}}</strong>                         
+                        <p class="esp py-0.5">Carrera: {{user.carrera}}</p>           
+                        <!-- <p>Estudiante</p>               -->
+                      </div>
+                      <div class="fecha py-0.5">
+                        <p>emisión: {{ dateManager(user.emision) }}</p>
+                        <p>vencimiento: {{ dateManager(user.vencimiento) }}</p>
                       </div>
                   </div>
                   <div class="card__body">
@@ -70,10 +87,18 @@ export default defineComponent({
     props: ['id'],    
     setup(props) {
 
+        let dateManager = (day: string) => {
+            var fecha = new Date(day);
+            var yearExpired = fecha.getFullYear() + 4; 
+            var date = yearExpired+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+            var date = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();    
+          return date;
+        };  
+
         let { user, userM, errorGet, load, showData } = getUser(props.id)
         let { eliminar, error, resultado } = deleteUser(props.id)
         let cedulaN = ref<Number | null>()
-        let url : any = ref()
+        let url : any = ref();
         var userReturn : userModel | undefined | null;
 
         onMounted(() => {
@@ -135,7 +160,7 @@ export default defineComponent({
       }
         return {
             url, user, userM, showData, makePDF,
-            alertDisplay, EliminarUser
+            alertDisplay, EliminarUser, dateManager
         }
     }
 })
@@ -231,7 +256,7 @@ body {
 .card__header {
   position: relative;
   padding: 10px 30px 10px;
-  background-color: #01519d;
+  /* background-color: #01519d; */
 }
 .card__body p {
   /* margin-top: 5px;
@@ -286,6 +311,7 @@ h5 {
   object-fit: cover;
 }
 
+
 /* .card__header h2 {
   color: #FFF;
   font-size: 32px;
@@ -310,6 +336,13 @@ border-bottom: 1px solid black; */
   margin: auto;
   opacity: 0.4;
 }
+.card__info .head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.card__info {
+  text-align: left;
+}
 
 .card__info h3 {
   color: var(--dark);
@@ -320,7 +353,26 @@ border-bottom: 1px solid black; */
 
 .card__info p {
   color: var(--dark);
-  font-size: 18px;
+  /* font-size: 18px; */
   line-height: 1.4;
+}
+
+.esp {
+  font-size: 15px;
+}
+.fecha { 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.fondo {
+  position: absolute;
+    z-index: -1;
+    /* width: 100%; */
+    margin: auto;
+    left: 0px;
+    top: 0px;
+    height: 300px;
 }
 </style>

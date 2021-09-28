@@ -27,7 +27,12 @@
             <div v-else>
                 <input v-model="formUser.userReg.carrera" type="text" placeholder="Especializacion" name="especializacion" />
             </div>
-            <div>
+            <div class="date">
+                <label for="fecha">Vencimiento</label>
+                <input  type="date" id="start" name="trip-start" v-model="formUser.userReg.vencimiento" >
+            </div>
+            <!-- min="2021-10-01" max="2034-12-31" -->
+            <div >
                 <input type="file" accept="image/*" @change="pickFile2">
             </div>
             <div id="preview">
@@ -68,6 +73,17 @@ export default defineComponent({
             }
         })
 
+        let dateManager = (vence : boolean) => {
+            var today = new Date();
+            if (vence) {
+                var yearExpired = today.getFullYear() + 4; 
+                var date = yearExpired+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            } else {
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();    
+            }
+            return date;
+        };    
+
         let userReg : userModel = {
             nombre: '',
             apellido: '',
@@ -79,7 +95,9 @@ export default defineComponent({
             foto: '',
             id: '1',
             cedulaN: null,
-            rol: null
+            rol: null,
+            emision: dateManager(false),
+            vencimiento: dateManager(true)
         }
 
         //let selectedFile : any
@@ -134,16 +152,6 @@ export default defineComponent({
             }
         }
 
-        // let userAddedAlert = () => {
-        //     Swal.fire({title: 'Usuario agregado exitosamente!', text: '', icon: 'success'})
-        //     .then((result) => {
-        //       if (result.isConfirmed) {
-        //         router.push({ name: 'Ver' })
-        //       }
-        //     })
-        // }
-
-
         let handleSubmit = () => {
             const { error, resultado, insert } = insertUser(userReg)                                                
             Promise.resolve(insert()).then(() => {
@@ -163,6 +171,10 @@ export default defineComponent({
             })
         }
 
+        onUpdated(() => {
+            console.log(formUser.value.userReg.vencimiento)
+            console.log(formUser.value.userReg.emision)
+        })
         return {
             formUser, CambioRole, url, pickFile2, handleSubmit
         }
@@ -201,6 +213,10 @@ export default defineComponent({
         font-size: 16px;
         grid-gap: 10px;
     } */
+    .date {
+        display: grid;
+        grid-template-columns: 1fr 1fr
+    }
     .buttons-holder {
         text-align: center;
     }

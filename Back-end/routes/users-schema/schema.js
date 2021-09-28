@@ -17,7 +17,9 @@ const getUserSchema = {
                         id : { type : 'number' },
                         cedula: {type: 'number'},
                         foto: {type: 'string'},
-                        rol: {type: 'number'}
+                        rol: {type: 'number'},
+                        emision: {type: 'string'},
+                        vencimiento: {type: 'string'}
                     }
                 }
             }
@@ -42,7 +44,9 @@ const getAllUserSchema = {
                         id : { type : 'number' },
                         cedula: {type: 'number'},
                         foto : { type: 'string'},
-                        rol: {type: 'number'}
+                        rol: {type: 'number'},                        
+                        emision: {type: 'string'},
+                        vencimiento: {type: 'string'}
                     }
                 }
             }
@@ -92,6 +96,8 @@ const updateUserSchema = {
                 carrera: {type: 'string', maxLength: 100},
                 cedulaN: {type: 'number'},
                 foto: {type: 'string'}
+                // emision: {type: 'string'},
+                // vencimiento: {type: 'string'}
             }
         }
     },
